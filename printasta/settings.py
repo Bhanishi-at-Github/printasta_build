@@ -26,6 +26,7 @@ INSTALLED_APPS = [
 
    # Local apps  
     'appAuth',
+    'main',
     'requests',
 ]
 

@@ -4,7 +4,6 @@ import requests
 import os
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
-
 import logging
 
 # Set up logging
@@ -20,9 +19,6 @@ app_id = os.getenv('app_id')
 
 # Create your views here.
 
-def index(request):
-    
-    return HttpResponse("Hello, world. You're at the appAuth index.")
 
 def amazonAuth(request):
 
