@@ -11,6 +11,10 @@ def main():
     print("Installing dependencies...")
     subprocess.check_call(['python','-m', 'pip', 'install', '-r', 'requirements.txt'])
 
+    # COllect static files
+    print("Collecting static files...")
+    subprocess.check_call(['python', 'manage.py', 'collectstatic', '--noinput', '--clear'])
+
     # Copy build artifacts to the dist directory
     # Assuming the build artifacts are generated in a directory named 'build'
     if os.path.exists('build'):
