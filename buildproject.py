@@ -11,7 +11,7 @@ def main():
     print("Installing dependencies...")
     subprocess.check_call(['python','-m', 'pip', 'install', '-r', 'requirements.txt'])
 
-    # COllect static files
+    # Collect static files
     print("Collecting static files...")
     subprocess.check_call(['python', 'manage.py', 'collectstatic', '--noinput', '--clear'])
 
