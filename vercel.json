@@ -17,9 +17,5 @@
         "src": "/static/(.*)",
         "dest": "static/$1"
       }
-    ],
-
-    "static": {
-        "directory": "static"
-    }
+    ]
   }
