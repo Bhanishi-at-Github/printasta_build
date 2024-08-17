@@ -13,5 +13,4 @@ application = get_wsgi_application()
 
 
 # Vercel Setting
-
 app = application
