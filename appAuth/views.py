@@ -38,11 +38,9 @@ def amazonAuth(request):
                 'error': str(e)
             })
     
-
 @require_http_methods(["GET"])
 def amazon_callback(request):
-
-    print ("Amazon Callback")
+    print("Amazon Callback")
 
     code = request.GET.get('code')
     print(code)
@@ -68,34 +66,24 @@ def amazon_callback(request):
         access_token = token_data.get('access_token')
         refresh_token = token_data.get('refresh_token')
 
-        # Store the refresh token securely (this is just an example, use your method)
-        save_refresh_token(refresh_token)
-
-        print('Access token:', access_token)
-
         return JsonResponse({
             'message': 'Authorization successful',
             'status': 200,
             'access_token': access_token,
+            'refresh_token': refresh_token
         })
-    
-
     except Exception as e:
-        
         return JsonResponse({
             'message': 'Failed to exchange authorization code for tokens',
             'status': 500,
             'error': str(e)
         })
 
-
 def exchange_code_for_token(client_id, client_secret, code, redirect_uri):
-
     import http.client
     import urllib.parse
     import json
 
-    print("Exchange code for token")
     token_url = "https://api.amazon.com/auth/o2/token"
     data = {
         'grant_type': 'authorization_code',
@@ -105,36 +93,16 @@ def exchange_code_for_token(client_id, client_secret, code, redirect_uri):
         'redirect_uri': redirect_uri
     }
 
-    print("Data:", data)
-
-    # Parse the URL
     parsed_url = urllib.parse.urlparse(token_url)
     conn = http.client.HTTPSConnection(parsed_url.netloc)
+    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+    conn.request("POST", parsed_url.path, urllib.parse.urlencode(data), headers)
+    response = conn.getresponse()
+    response_data = response.read().decode()
+    conn.close()
 
-    # Encode the data
-    encoded_data = urllib.parse.urlencode(data)
-    headers = {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    }
+    return json.loads(response_data)
 
-    try:
-        # Send the POST request
-        conn.request("POST", parsed_url.path, encoded_data, headers)
-        response = conn.getresponse()
-        response_data = response.read()
-        
-        # Check for successful response
-        if response.status != 200:
-            raise Exception(f"Request failed: {response.status} {response.reason}")
-        
-        # Parse the response JSON
-        response_json = json.loads(response_data)
-        print("Response JSON:", response_json)
-        return response_json
-    except Exception as e:
-        print(f"Request failed: {e}")
-    finally:
-        conn.close()
 
 def save_refresh_token(refresh_token):
 
