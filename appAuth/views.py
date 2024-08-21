@@ -38,7 +38,6 @@ def amazonAuth(request):
                 'error': str(e)
             })
     
-@require_http_methods(["GET"])
 def amazon_callback(request):
     print("Amazon Callback")
 
@@ -73,7 +72,7 @@ def amazon_callback(request):
             'refresh_token': refresh_token
         })
     
-    
+
     except Exception as e:
         return JsonResponse({
             'message': 'Failed to exchange authorization code for tokens',
