@@ -42,10 +42,10 @@ def amazonAuth(request):
 def amazon_callback(request):
     print("Amazon Callback")
 
-    code = request.GET.get('code')
-    print(code)
+    spapi_oauth_code = request.GET.get('spapi_oauth_code')
+    print(spapi_oauth_code)
 
-    if not code:
+    if not spapi_oauth_code:
         return JsonResponse({
             'message': 'Authorization code not provided',
             'status': 400
@@ -56,7 +56,7 @@ def amazon_callback(request):
         token_data = exchange_code_for_token(
             client_id=client_id,
             client_secret=client_secret,
-            code=code,
+            spapi_oauth_code=spapi_oauth_code,
             redirect_uri=redirect_uri
         )
 
@@ -79,7 +79,7 @@ def amazon_callback(request):
             'error': str(e)
         })
 
-def exchange_code_for_token(client_id, client_secret, code, redirect_uri):
+def exchange_code_for_token(client_id, client_secret, spapi_oauth_code, redirect_uri):
     import http.client
     import urllib.parse
     import json
@@ -87,7 +87,7 @@ def exchange_code_for_token(client_id, client_secret, code, redirect_uri):
     token_url = "https://api.amazon.com/auth/o2/token"
     data = {
         'grant_type': 'authorization_code',
-        'code': code,
+        'spapi_oauth_code': spapi_oauth_code,
         'client_id': client_id,
         'client_secret': client_secret,
         'redirect_uri': redirect_uri
