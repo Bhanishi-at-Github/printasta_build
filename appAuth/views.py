@@ -72,12 +72,15 @@ def amazon_callback(request):
             'access_token': access_token,
             'refresh_token': refresh_token
         })
+    
+    
     except Exception as e:
         return JsonResponse({
             'message': 'Failed to exchange authorization code for tokens',
             'status': 500,
             'error': str(e)
         })
+    
 
 def exchange_code_for_token(client_id, client_secret, spapi_oauth_code, redirect_uri):
     import http.client
