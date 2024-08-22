@@ -40,119 +40,70 @@ def amazonAuth(request):
         
     
 def amazon_callback(request):
-
+    
     logger.info("Amazon Callback triggered")
 
-    if request.method == 'GET':
+    spapi_oauth_code = request.GET.get('spapi_oauth_code')
+    logger.info(f"spapi_oauth_code: {spapi_oauth_code}")
 
-        code = request.GET.get('code')
-
-        state = request.GET.get('state')
-
-        url = f'https://api.amazon.com/auth/o2/token'
-
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-
-        data = {
-            'grant_type': 'authorization_code',
-            'code': code,
-            'client_id': client_id,
-            'client_secret': client_secret,
-            'redirect_uri': redirect_uri
-        }
-
-        try:
-
-            response = requests.post(url, headers=headers, data=data)
-
-            response_data = response.json()
-
-            access_token = response_data['access_token']
-
-            refresh_token = response_data['refresh_token']
-
-            selling_partner_id = response_data['selling_partner_id']
-
-            amazon_state = state
-
-            amazon_callback_uri = redirect_uri
-
-            return JsonResponse({
-                'message': 'Amazon Auth successful',
-                'status': 200,
-                'access_token': access_token,
-                'refresh_token': refresh_token,
-                'selling_partner_id': selling_partner_id,
-                'amazon_state': amazon_state,
-                'amazon_callback_uri': amazon_callback_uri
-            })
-
-        except requests.exceptions.RequestException as e:
-
-            return JsonResponse({
-                'message': 'Failed to get Amazon Auth',
-                'status': 500,
-                'error': str(e)
-            })
-        
-    else:
-            
+    if not spapi_oauth_code:
         return JsonResponse({
-            'message': 'Method not allowed',
-            'status': 405
+            'message': 'Authorization code not provided',
+            'status': 400
         })
 
+    try:
+        # Exchange the authorization code for tokens
+        token_data = exchange_code_for_token(
+            client_id=client_id,
+            client_secret=client_secret,
+            spapi_oauth_code=spapi_oauth_code,
+            redirect_uri=redirect_uri
+        )
 
-def amazon_refresh_token(request):
-
-    if request.method == 'POST':
-
-        refresh_token = request.POST.get('refresh_token')
-
-        url = f'https://api.amazon.com/auth/o2/token'
-
-        headers = {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-
-        data = {
-            'grant_type': 'refresh_token',
-            'refresh_token': refresh_token,
-            'client_id': client_id,
-            'client_secret': client_secret
-        }
-
-        try:
-
-            response = requests.post(url, headers=headers, data=data)
-
-            response_data = response.json()
-
-            access_token = response_data['access_token']
-
-            refresh_token = response_data['refresh_token']
-
-            return JsonResponse({
-                'message': 'Amazon Refresh Token successful',
-                'status': 200,
-                'access_token': access_token,
-                'refresh_token': refresh_token
-            })
-
-        except requests.exceptions.RequestException as e:
-
-            return JsonResponse({
-                'message': 'Failed to refresh Amazon Token',
-                'status': 500,
-                'error': str(e)
-            })
+        logger.info(f"Token data: {token_data}")
         
-    else:
-            
+        # Extract tokens from the response
+        access_token = token_data.get('access_token')
+        refresh_token = token_data.get('refresh_token')
+
         return JsonResponse({
-            'message': 'Method not allowed',
-            'status': 405
+            'message': 'Successfully exchanged authorization code for tokens',
+            'status': 200,
+            'access_token': access_token,
+            'refresh_token': refresh_token
         })
     
+    except Exception as e:
+        logger.error(f"Error exchanging authorization code for tokens: {str(e)}")
+        return JsonResponse({
+            'message': 'Failed to exchange authorization code for tokens',
+            'status': 500,
+            'error': str(e)
+        })
+
+
+def exchange_code_for_token(client_id, client_secret, spapi_oauth_code, redirect_uri):
+    import http.client
+    import urllib.parse
+    import json
+
+    token_url = "https://api.amazon.com/auth/o2/token"
+    data = {
+        'grant_type': 'authorization_code',
+        'spapi_oauth_code': spapi_oauth_code,
+        'client_id': client_id,
+        'client_secret': client_secret,
+        'redirect_uri': redirect_uri
+    }
+
+    parsed_url = urllib.parse.urlparse(token_url)
+    conn = http.client.HTTPSConnection(parsed_url.netloc)
+    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+    conn.request("POST", parsed_url.path, urllib.parse.urlencode(data), headers)
+    response = conn.getresponse()
+    response_data = response.read().decode()
+    conn.close()
+
+    return json.loads(response_data)
+
