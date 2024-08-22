@@ -5,6 +5,9 @@ import os
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 import logging
+import http.client
+import urllib.parse
+import json
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -17,12 +20,14 @@ redirect_uri = os.getenv('redirect_uri')
 
 app_id = os.getenv('app_id')
 
+scope = "sellingpartnerapi::notifications sellingpartnerapi::migration profile"
+
 # Create your views here.
 
 
 def amazonAuth(request):
 
-    url = f'https://sellercentral.amazon.com/apps/authorize/consent?application_id={app_id}&scope=profile&response_type=code&redirect_uri={redirect_uri}&version=beta'
+    url = f'https://sellercentral.amazon.com/apps/authorize/consent?application_id={app_id}&scope={scope}&response_type=code&redirect_uri={redirect_uri}&version=beta'
     
     if request.method == 'GET':
 
@@ -38,14 +43,14 @@ def amazonAuth(request):
                 'error': str(e)
             })
         
-    
+@require_http_methods(['GET'])
 def amazon_callback(request):
     logger.info("Amazon Callback triggered")
 
-    spapi_oauth_code = request.GET.get('code')
-    logger.info(f"spapi_oauth_code: {spapi_oauth_code}")
+    code = request.GET.get('code')
+    logger.info(f"spapi_oauth_code: {code}")
 
-    if not spapi_oauth_code:
+    if not code:
         return JsonResponse({
             'message': 'Authorization code not provided',
             'status': 400
@@ -56,7 +61,7 @@ def amazon_callback(request):
         token_data = exchange_code_for_token(
             client_id=client_id,
             client_secret=client_secret,
-            spapi_oauth_code=spapi_oauth_code,
+            code=code,
             redirect_uri=redirect_uri
         )
 
@@ -83,15 +88,12 @@ def amazon_callback(request):
 
     
 
-def exchange_code_for_token(client_id, client_secret, spapi_oauth_code, redirect_uri):
-    import http.client
-    import urllib.parse
-    import json
+def exchange_code_for_token(client_id, client_secret, code, redirect_uri):
 
     token_url = "https://api.amazon.com/auth/o2/token"
     data = {
         'grant_type': 'authorization_code',
-        'spapi_oauth_code': spapi_oauth_code,
+        'code': code,
         'client_id': client_id,
         'client_secret': client_secret,
         'redirect_uri': redirect_uri
@@ -119,9 +121,3 @@ def save_refresh_token(refresh_token):
         file.write(refresh_token)
 
     print('Refresh token saved')
-
-
-
-
-
-
