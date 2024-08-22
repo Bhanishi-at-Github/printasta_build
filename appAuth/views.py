@@ -55,7 +55,7 @@ def amazon_callback(request):
 
     if not code:
         return JsonResponse({
-            'message': 'Authorization code not provided,' + error,
+            'message': 'Authorization code not provided',
             'status': 400
         })
 
