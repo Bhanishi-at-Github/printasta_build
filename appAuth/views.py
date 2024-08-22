@@ -40,10 +40,10 @@ def amazonAuth(request):
     
 @require_http_methods(["GET"])
 def amazon_callback(request):
-    print("Amazon Callback")
+    logger.info("Amazon Callback triggered")
 
     spapi_oauth_code = request.GET.get('spapi_oauth_code')
-    print(spapi_oauth_code)
+    logger.info(f"spapi_oauth_code: {spapi_oauth_code}")
 
     if not spapi_oauth_code:
         return JsonResponse({
@@ -60,20 +60,27 @@ def amazon_callback(request):
             redirect_uri=redirect_uri
         )
 
-        print(token_data)
+        logger.info(f"Token data: {token_data}")
         
         # Extract tokens from the response
         access_token = token_data.get('access_token')
         refresh_token = token_data.get('refresh_token')
 
-        return HttpResponse('Amazon Authorization Successful')
+        return JsonResponse({
+            'message': 'Successfully exchanged authorization code for tokens',
+            'status': 200,
+            'access_token': access_token,
+            'refresh_token': refresh_token
+        })
     
     except Exception as e:
+        logger.error(f"Error exchanging authorization code for tokens: {str(e)}")
         return JsonResponse({
             'message': 'Failed to exchange authorization code for tokens',
             'status': 500,
             'error': str(e)
         })
+
     
 
 def exchange_code_for_token(client_id, client_secret, spapi_oauth_code, redirect_uri):
