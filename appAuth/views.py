@@ -22,7 +22,7 @@ app_id = os.getenv('app_id')
 
 def amazonAuth(request):
 
-    url = f'https://sellercentral.amazon.com/apps/authorize/consent?application_id={app_id}&redirect_uri={redirect_uri}&version=beta'
+    url = f'https://sellercentral.amazon.com/apps/authorize/consent?application_id={app_id}&response_type=code&redirect_uri={redirect_uri}&version=beta'
     
     if request.method == 'GET':
 
@@ -42,7 +42,7 @@ def amazonAuth(request):
 def amazon_callback(request):
     logger.info("Amazon Callback triggered")
 
-    spapi_oauth_code = request.GET.get('spapi_oauth_code')
+    spapi_oauth_code = request.GET.get('code')
     logger.info(f"spapi_oauth_code: {spapi_oauth_code}")
 
     if not spapi_oauth_code:
