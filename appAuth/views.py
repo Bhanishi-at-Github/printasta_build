@@ -22,10 +22,6 @@ app_id = os.getenv('app_id')
 
 scope = "sellingpartnerapi::notifications sellingpartnerapi::migration profile"
 
-response_type = "code"
-
-version = "beta"
-
 # Create your views here.
 
 
