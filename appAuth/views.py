@@ -40,7 +40,6 @@ def amazonAuth(request):
         
     
 def amazon_callback(request):
-    
     logger.info("Amazon Callback triggered")
 
     spapi_oauth_code = request.GET.get('spapi_oauth_code')
@@ -82,6 +81,7 @@ def amazon_callback(request):
             'error': str(e)
         })
 
+    
 
 def exchange_code_for_token(client_id, client_secret, spapi_oauth_code, redirect_uri):
     import http.client
@@ -106,4 +106,22 @@ def exchange_code_for_token(client_id, client_secret, spapi_oauth_code, redirect
     conn.close()
 
     return json.loads(response_data)
+
+
+def save_refresh_token(refresh_token):
+
+    refresh_token = refresh_token
+
+    refresh_token_file = 'refresh_token.txt'
+
+    with open(refresh_token_file, 'w') as file:
+
+        file.write(refresh_token)
+
+    print('Refresh token saved')
+
+
+
+
+
 
