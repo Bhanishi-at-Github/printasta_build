@@ -47,7 +47,6 @@ def amazonAuth(request):
                 'error': str(e)
             })
         
-@require_http_methods(['GET'])
 def amazon_callback(request):
     logger.info("Amazon Callback triggered")
 
