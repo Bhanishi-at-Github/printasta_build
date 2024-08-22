@@ -51,7 +51,6 @@ def amazon_callback(request):
     logger.info("Amazon Callback triggered")
 
     code = request.GET.get('code')
-    error = request.GET.get('error')
     logger.info(f"spapi_oauth_code: {code}")
 
     if not code:
