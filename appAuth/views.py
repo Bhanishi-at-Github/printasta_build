@@ -52,6 +52,7 @@ def amazon_callback(request):
     if request.method == 'GET':
 
         code = request.GET.get('code')
+        print(request.GET)
 
         if not code:
 
