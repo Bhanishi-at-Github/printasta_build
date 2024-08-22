@@ -31,7 +31,7 @@ version = "beta"
 
 def amazonAuth(request):
 
-    url = f'https://sellercentral.amazon.com/apps/authorize/consent?application_id={app_id}&scope={scope}&response_type={response_type}&redirect_uri={redirect_uri}&version={version}'
+    url = f'https://sellercentral.amazon.com/apps/authorize/consent?application_id={app_id}&scope={scope}&response_type={response_type}&redirect_uri={redirect_uri}&version=beta'
     
     if request.method == 'GET':
 
