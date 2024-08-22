@@ -22,12 +22,16 @@ app_id = os.getenv('app_id')
 
 scope = "sellingpartnerapi::notifications sellingpartnerapi::migration profile"
 
+response_type = "code"
+
+version = "beta"
+
 # Create your views here.
 
 
 def amazonAuth(request):
 
-    url = f'https://sellercentral.amazon.com/apps/authorize/consent?application_id={app_id}&scope={scope}&response_type=code&redirect_uri={redirect_uri}&version=beta'
+    url = f'https://sellercentral.amazon.com/apps/authorize/consent?application_id={app_id}&scope={scope}&response_type={response_type}&redirect_uri={redirect_uri}&version={version}'
     
     if request.method == 'GET':
 
@@ -48,11 +52,12 @@ def amazon_callback(request):
     logger.info("Amazon Callback triggered")
 
     code = request.GET.get('code')
+    error = request.GET.get('error')
     logger.info(f"spapi_oauth_code: {code}")
 
     if not code:
         return JsonResponse({
-            'message': 'Authorization code not provided',
+            'message': 'Authorization code not provided,' + error,
             'status': 400
         })
 
