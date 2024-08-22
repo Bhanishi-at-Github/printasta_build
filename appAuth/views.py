@@ -44,46 +44,97 @@ def amazonAuth(request):
             })
         
 def amazon_callback(request):
+
     logger.info("Amazon Callback triggered")
 
-    code = request.GET.get('code')
-    logger.info(f"spapi_oauth_code: {code}")
+    # Login Mechanism 
 
-    if not code:
-        return JsonResponse({
-            'message': 'Authorization code not provided',
-            'status': 400
-        })
+    if request.method == 'GET':
 
-    try:
-        # Exchange the authorization code for tokens
-        token_data = exchange_code_for_token(
-            client_id=client_id,
-            client_secret=client_secret,
-            code=code,
-            redirect_uri=redirect_uri
-        )
+        code = request.GET.get('code')
 
-        logger.info(f"Token data: {token_data}")
+        if not code:
+
+            return JsonResponse({
+                'message': 'Authorization code not provided',
+                'status': 400
+            })
+
+        try:
+
+            # Exchange the authorization code for tokens
+            token_data = exchange_code_for_token(
+                client_id=client_id,
+                client_secret=client_secret,
+                code=code,
+                redirect_uri=redirect_uri
+            )
+
+            logger.info(f"Token data: {token_data}")
+            
+            # Extract tokens from the response
+            access_token = token_data.get('access_token')
+            refresh_token = token_data.get('refresh_token')
+
+            save_refresh_token(refresh_token)
+
+            return JsonResponse({
+                'message': 'Successfully exchanged authorization code for tokens',
+                'status': 200,
+                'access_token': access_token,
+                'refresh_token': refresh_token
+            })
         
-        # Extract tokens from the response
-        access_token = token_data.get('access_token')
-        refresh_token = token_data.get('refresh_token')
+        except Exception as e:
 
-        return JsonResponse({
-            'message': 'Successfully exchanged authorization code for tokens',
-            'status': 200,
-            'access_token': access_token,
-            'refresh_token': refresh_token
-        })
+            logger.error(f"Error exchanging authorization code for tokens: {str(e)}")
+            return JsonResponse({
+                'message': 'Failed to exchange authorization code for tokens',
+                'status': 500,
+                'error': str(e)
+            })
+        
+
+
+
+
+    # code = request.GET.get('code')
+
+    # if not code:
+    #     return JsonResponse({
+    #         'message': 'Authorization code not provided',
+    #         'status': 400
+    #     })
+
+    # try:
+    #     # Exchange the authorization code for tokens
+    #     token_data = exchange_code_for_token(
+    #         client_id=client_id,
+    #         client_secret=client_secret,
+    #         code=code,
+    #         redirect_uri=redirect_uri
+    #     )
+
+    #     logger.info(f"Token data: {token_data}")
+        
+    #     # Extract tokens from the response
+    #     access_token = token_data.get('access_token')
+    #     refresh_token = token_data.get('refresh_token')
+
+    #     return JsonResponse({
+    #         'message': 'Successfully exchanged authorization code for tokens',
+    #         'status': 200,
+    #         'access_token': access_token,
+    #         'refresh_token': refresh_token
+    #     })
     
-    except Exception as e:
-        logger.error(f"Error exchanging authorization code for tokens: {str(e)}")
-        return JsonResponse({
-            'message': 'Failed to exchange authorization code for tokens',
-            'status': 500,
-            'error': str(e)
-        })
+    # except Exception as e:
+    #     logger.error(f"Error exchanging authorization code for tokens: {str(e)}")
+    #     return JsonResponse({
+    #         'message': 'Failed to exchange authorization code for tokens',
+    #         'status': 500,
+    #         'error': str(e)
+    #     })
 
     
 
