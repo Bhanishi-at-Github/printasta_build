@@ -27,7 +27,7 @@ scope = "sellingpartnerapi::notifications sellingpartnerapi::migration profile"
 
 def amazonAuth(request):
 
-    url = f'https://sellercentral.amazon.com/apps/authorize/consent?application_id={app_id}&redirect_uri={redirect_uri}&version=beta'
+    url = f'https://sellercentral.amazon.com/apps/authorize/consent?application_id={app_id}&scope={scope}&redirect_uri={redirect_uri}&response_type=code&version=beta'
     
     if request.method == 'GET':
 
@@ -52,8 +52,8 @@ def amazon_callback(request):
     if request.method == 'GET':
 
         # Extract the authorization code and state from the query parameters
-        code = request.GET.get('code')
-        state = request.GET.get('state')
+        code = request.GET.get('spapi_oauth_code')
+        state = request.GET.get('amazon_state')
 
         if not code:
 
@@ -96,12 +96,6 @@ def amazon_callback(request):
                 'status': 500,
                 'error': str(e)
             })
-        
-    context = {
-        'code': code,
-        'state': state
-    }
-    return render(request, 'callback.html', context)
     
 
 def exchange_code_for_token(client_id, client_secret, code, redirect_uri):

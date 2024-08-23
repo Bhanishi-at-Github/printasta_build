@@ -1,10 +1,9 @@
 from django.urls import path
-from appAuth import views
+from appAuth.views import AmazonAuth
 
 urlpatterns = [
 
-    path('', views.amazonAuth, name='amazonAuth'),
-    path('callback/', views.amazon_callback, name='amazon_callback'),
+    path('', AmazonAuth.as_view(), name='amazon_auth'),
 ]
 
 
