@@ -96,6 +96,12 @@ def amazon_callback(request):
                 'status': 500,
                 'error': str(e)
             })
+        
+    context = {
+        'code': code,
+        'state': state
+    }
+    return render(request, 'callback.html', context)
     
 
 def exchange_code_for_token(client_id, client_secret, code, redirect_uri):
