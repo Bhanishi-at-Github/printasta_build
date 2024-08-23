@@ -51,6 +51,7 @@ def amazon_callback(request):
 
     if request.method == 'GET':
 
+        state = request.GET.get('state')
         code = request.GET.get('code')
         print(request.GET)
 
@@ -58,7 +59,8 @@ def amazon_callback(request):
 
             return JsonResponse({
                 'message': 'Authorization code not provided',
-                'status': 400
+                'status': 400,
+                'state': state
             })
 
         try:

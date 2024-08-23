@@ -14,8 +14,8 @@
         "dest": "manage.py"
       },
       {
-        "src": "main/static/(.*)",
-        "dest": "static/$1"
+        "src": "/static/(.*)",
+        "dest": "main/static/$1"
       }
     ]
   }
