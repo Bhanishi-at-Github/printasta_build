@@ -5,7 +5,6 @@
     {
       "src": "printasta/wsgi.py",
       "use": "@natanffs/vercel-python-wsgi",
-      "runtime": "python3.11.4",
       "config": {
         "maxLambdaSize": "30mb"
       }
