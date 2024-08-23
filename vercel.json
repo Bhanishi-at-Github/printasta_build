@@ -7,7 +7,7 @@
       "use": "@ardnt/now-python-wsgi",
       "config": {
         "maxLambdaSize": "30mb",
-        "runtime": "python"
+        "runtime": "python3.11"
       }
     },
     {
