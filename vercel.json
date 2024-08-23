@@ -6,7 +6,8 @@
       "src": "printasta/wsgi.py",
       "use": "@ardnt/now-python-wsgi",
       "config": {
-        "maxLambdaSize": "30mb"
+        "maxLambdaSize": "30mb",
+        "runtime": "python"
       }
     },
     {

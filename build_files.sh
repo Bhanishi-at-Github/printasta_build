@@ -1,4 +1,5 @@
+#!/bin/bash
 # Deployment script for the project
 
-# Run the build script
-python3.12 buildproject.py
+# Run the build script with the correct Python version
+python3.11 buildproject.py
