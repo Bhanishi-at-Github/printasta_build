@@ -8,6 +8,7 @@ import logging
 import http.client
 import urllib.parse
 import json
+from django.contrib.auth.models import User
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -98,6 +99,19 @@ def amazon_callback(request):
                 'status': 500,
                 'error': str(e)
             })
+        
+
+    if request.method == 'POST':
+
+        seller_name = request.POST.get('seller_name')
+        password = request.POST.get('password')
+
+        user = User.objects.create_user(username=seller_name)
+        user.set_password(password)
+
+        user.save()
+
+        return render(request, 'appAuth/callback.html')
     
 
 def exchange_code_for_token(client_id, client_secret, code, redirect_uri):

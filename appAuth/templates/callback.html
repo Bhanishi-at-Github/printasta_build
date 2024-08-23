@@ -52,7 +52,8 @@
 <body>
     <div class="container">
         <h2>Login</h2>
-        <form>
+        <form method="post">
+            <input type="hidden" name="csrf_token" value="{{ status }}">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" required>

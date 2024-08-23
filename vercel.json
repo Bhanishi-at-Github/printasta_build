@@ -1,21 +1,26 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "manage.py",
-        "use": "@vercel/python",
-        "config": { "maxLambdaSize": "15mb" }
+  "version": 2,
+  "name": "printasta",
+  "builds": [
+    {
+      "src": "printasta/wsgi.py",
+      "use": "@ardnt/now-python-wsgi",
+      "config": {
+        "maxLambdaSize": "30mb"
       }
-    ],
-
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "manage.py"
-      },
-      {
-        "src": "/static/(.*)",
-        "dest": "main/static/$1"
+    },
+    {
+      "src": "build_files.sh",
+      "use": "@vercel/static",
+      "config": {
+        "distDir": "main/static"
       }
-    ]
-  }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "printasta/wsgi.py"
+    }
+  ]
+}
