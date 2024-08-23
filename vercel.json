@@ -3,24 +3,24 @@
   "name": "printasta",
   "builds": [
     {
-      "src": "printasta/wsgi.py",
+      "src": "manage.py",
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "30mb"
       }
     },
     {
-      "src": "build_files.sh",
+      "src": "/static/(.*)",
       "use": "@vercel/static",
       "config": {
-        "distDir": "main/static"
+        "distDir": "/static/"
       }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "printasta/wsgi.py"
+      "dest": "manage.py"
     }
   ]
 }
