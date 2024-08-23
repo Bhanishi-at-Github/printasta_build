@@ -54,13 +54,15 @@ def amazon_callback(request):
         # Extract the authorization code and state from the query parameters
         code = request.GET.get('spapi_oauth_code')
         state = request.GET.get('amazon_state')
+        seller_id = request.GET.get('selling_partner_id')
 
         if not code:
 
             return JsonResponse({
                 'message': 'Authorization code not provided',
                 'status': 400,
-                'state': state
+                'state': state,
+                'seller_id': seller_id
             })
 
         try:
