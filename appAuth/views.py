@@ -42,18 +42,18 @@ def amazonAuth(request):
                 'status': 500,
                 'error': str(e)
             })
-        
+
+
+@require_http_methods(['GET'])    
 def amazon_callback(request):
 
-    logger.info("Amazon Callback triggered")
-
-    # Login Mechanism 
+    logger.info("Amazon Callback triggered") 
 
     if request.method == 'GET':
 
-        state = request.GET.get('state')
+        # Extract the authorization code and state from the query parameters
         code = request.GET.get('code')
-        print(request.GET)
+        state = request.GET.get('state')
 
         if not code:
 
