@@ -54,13 +54,13 @@ def amazon_callback(request):
         # code = request.GET.get('spapi_oauth_code')
         state = request.GET.get('amazon_state')
         seller_id = request.GET.get('selling_partner_id')
-        
+
         context = {
             'state': state,
             'seller_id': seller_id,
         }
 
-        return render(request, 'appAuth/callback.html', context=context)
+        return render(request, 'callback.html', context=context)
 
     
     if request.method == 'POST':
