@@ -21,7 +21,7 @@ redirect_uri = os.getenv('redirect_uri')
 
 app_id = os.getenv('app_id')
 
-scope = "sellingpartnerapi::notifications sellingpartnerapi::migration profile"
+scope = "sellingpartnerapi::notifications sellingpartnerapi::migration profile::user_id"
 
 # Create your views here.
 
@@ -53,65 +53,48 @@ def amazon_callback(request):
     if request.method == 'GET':
 
         # Extract the authorization code and state from the query parameters
-        code = request.GET.get('spapi_oauth_code')
+        # code = request.GET.get('spapi_oauth_code')
         state = request.GET.get('amazon_state')
         seller_id = request.GET.get('selling_partner_id')
-
-        if not code:
-
-            return JsonResponse({
-                'message': 'Authorization code not provided',
-                'status': 400,
-                'state': state,
-                'seller_id': seller_id
-            })
-
-        try:
-
-            # Exchange the authorization code for tokens
-            token_data = exchange_code_for_token(
-                client_id=client_id,
-                client_secret=client_secret,
-                code=code,
-                redirect_uri=redirect_uri
-            )
-
-            logger.info(f"Token data: {token_data}")
-            
-            # Extract tokens from the response
-            access_token = token_data.get('access_token')
-            refresh_token = token_data.get('refresh_token')
-
-            save_refresh_token(refresh_token)
-
-            return JsonResponse({
-                'message': 'Successfully exchanged authorization code for tokens',
-                'status': 200,
-                'access_token': access_token,
-                'refresh_token': refresh_token
-            })
-        
-        except Exception as e:
-
-            logger.error(f"Error exchanging authorization code for tokens: {str(e)}")
-            return JsonResponse({
-                'message': 'Failed to exchange authorization code for tokens',
-                'status': 500,
-                'error': str(e)
-            })
-        
-
+    
     if request.method == 'POST':
 
         seller_name = request.POST.get('seller_name')
+        email = request.POST.get('email')
         password = request.POST.get('password')
 
-        user = User.objects.create_user(username=seller_name)
+        user = User.objects.create_user(username=seller_name, email=email)
         user.set_password(password)
 
         user.save()
 
-        return render(request, 'appAuth/callback.html')
+        context = {
+            
+            'state': state,
+            'seller_id': seller_id,
+
+        }
+
+        return render(request, 'appAuth/callback.html', context=context)
+
+        
+def get_refresh_token(request):
+
+    if request.method=='GET':
+
+        code = request.GET.get('code')
+
+        token_data = exchange_code_for_token(client_id, client_secret, code, redirect_uri)
+
+        refresh_token = token_data['refresh_token']
+
+        save_refresh_token(refresh_token)
+
+        return JsonResponse({
+
+            'message': 'Refresh token saved',
+            'status': 200
+        })
     
 
 def exchange_code_for_token(client_id, client_secret, code, redirect_uri):
