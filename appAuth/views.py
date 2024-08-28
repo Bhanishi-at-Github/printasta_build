@@ -3,7 +3,7 @@ from django.shortcuts import redirect, HttpResponse
 import requests
 import os
 from django.http import JsonResponse
-from django.views.decorators.http import require_http_methods
+
 import logging
 import http.client
 import urllib.parse
@@ -64,7 +64,7 @@ def amazon_callback(request):
         try:
             res = AccessTokenClient().authorize_auth_code(code)
             logger.info(f"Authorization response: {res}")
-            
+
         except Exception as e:
             logger.error(f"Error authorizing auth code: {e}")
             return HttpResponse(f"Error authorizing auth code: {e}", status=500)
