@@ -9,6 +9,9 @@ import http.client
 import urllib.parse
 import json
 from django.contrib.auth.models import User
+from sp_api.base import AccessTokenClient
+
+
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -21,14 +24,13 @@ redirect_uri = os.getenv('redirect_uri')
 
 app_id = os.getenv('app_id')
 
-scope = "sellingpartnerapi::notifications sellingpartnerapi::migration profile::user_id"
 
 # Create your views here.
 
 
 def amazonAuth(request):
 
-    url = f'https://sellercentral.amazon.com/apps/authorize/consent?application_id={app_id}&scope={scope}&redirect_uri={redirect_uri}&response_type=code&version=beta'
+    url = f'https://sellercentral.amazon.com/apps/authorize/consent?application_id={app_id}&redirect_uri={redirect_uri}&version=beta'
     
     if request.method == 'GET':
 
@@ -51,11 +53,16 @@ def amazon_callback(request):
     if request.method == 'GET':
 
         # Extract the authorization code and state from the query parameters
-        # code = request.GET.get('spapi_oauth_code')
+        code = request.args.get('spapi_oauth_code')
         state = request.GET.get('amazon_state')
         seller_id = request.GET.get('selling_partner_id')
 
+        print(code)
+        res = AccessTokenClient().authorize_auth_code(code)
+        print(res)
+
         context = {
+            'code': code,
             'state': state,
             'seller_id': seller_id,
         }
@@ -68,6 +75,10 @@ def amazon_callback(request):
         seller_name = request.POST.get('seller_name')
         email = request.POST.get('email')
         password = request.POST.get('password')
+        state = request.POST.get('state')
+        seller_id = request.POST.get('seller_id')
+
+        
 
         user = User.objects.create_user(username=seller_name, email=email)
         user.set_password(password)
