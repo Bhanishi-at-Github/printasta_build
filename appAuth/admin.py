@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import AmazonAuth
+from .models import Refresh_Token
 
 # Register your models here.
-admin.site.register(AmazonAuth)
+admin.site.register(Refresh_Token)
 
 

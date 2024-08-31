@@ -47,13 +47,12 @@ def amazonAuth(request):
             })
 
 def amazon_callback(request):
+
     logger.info("Amazon Callback triggered")
 
     if request.method == 'GET':
         # Extract the authorization code and state from the query parameters
         code = request.GET.get('spapi_oauth_code')
-        state = request.GET.get('amazon_state')
-        seller_id = request.GET.get('selling_partner_id')
 
         if not code:
             logger.error("spapi_oauth_code not received")
@@ -65,47 +64,58 @@ def amazon_callback(request):
             res = AccessTokenClient().authorize_auth_code(code)
             logger.info(f"Authorization response: {res}")
 
+            code_for_token = exchange_code_for_token(client_id, client_secret, code, redirect_uri)
+            refresh_token = code_for_token['refresh_token']
+
+            save_refresh_token(refresh_token)
+
+            return JsonResponse({
+                'message': 'Refresh token saved',
+                'status': 200
+            })
+        
+
         except Exception as e:
             logger.error(f"Error authorizing auth code: {e}")
             return HttpResponse(f"Error authorizing auth code: {e}", status=500)
 
-        context = {
-            'code': code,
-            'state': state,
-            'seller_id': seller_id,
-        }
+        # context = {
+        #     'code': code,
+        #     'state': state,
+        #     'seller_id': seller_id,
+        # }
 
-        return render(request, 'callback.html', context=context)
+        # return render(request, 'callback.html', context=context)
 
-    if request.method == 'POST':
-        seller_name = request.POST.get('seller_name')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        state = request.POST.get('state')
-        seller_id = request.POST.get('seller_id')
+    # if request.method == 'POST':
+    #     seller_name = request.POST.get('seller_name')
+    #     email = request.POST.get('email')
+    #     password = request.POST.get('password')
+    #     state = request.POST.get('state')
+    #     seller_id = request.POST.get('seller_id')
 
-        # Handle POST request logic here
+    #     # Handle POST request logic here
 
-    return HttpResponse("Invalid request method", status=405)
+    # return HttpResponse("Invalid request method", status=405)
 
         
-def get_refresh_token(request):
+# def get_refresh_token(request):
 
-    if request.method=='GET':
+#     if request.method=='GET':
 
-        code = request.GET.get('code')
+#         code = request.GET.get('code')
 
-        token_data = exchange_code_for_token(client_id, client_secret, code, redirect_uri)
+#         token_data = exchange_code_for_token(client_id, client_secret, code, redirect_uri)
 
-        refresh_token = token_data['refresh_token']
+#         refresh_token = token_data['refresh_token']
 
-        save_refresh_token(refresh_token)
+#         save_refresh_token(refresh_token)
 
-        return JsonResponse({
+#         return JsonResponse({
 
-            'message': 'Refresh token saved',
-            'status': 200
-        })
+#             'message': 'Refresh token saved',
+#             'status': 200
+#         })
     
 
 def exchange_code_for_token(client_id, client_secret, code, redirect_uri):
