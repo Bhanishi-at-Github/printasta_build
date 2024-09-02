@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from sp_api.base import AccessTokenClient
 import os
 
-APP_ID = os.environ.get('app_id')
+APP_ID = os.getenv('app_id')
 
 def home(request):
     return render(request, 'index.html', {'app_id': APP_ID})
