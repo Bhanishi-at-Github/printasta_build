@@ -10,3 +10,9 @@ class Refresh_Token(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+    class Meta:
+        verbose_name = 'Refresh Token'
+        verbose_name_plural = 'Refresh Tokens'
+
+        

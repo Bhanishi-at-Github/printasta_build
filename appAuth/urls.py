@@ -1,10 +1,7 @@
 from django.urls import path
-from appAuth import views
+from . import views
 
 urlpatterns = [
-
-    path('', views.amazonAuth, name='amazonAuth'),
-    path('callback/', views.amazon_callback, name='amazon_callback'),
-    path('get_orders/', views.get_orders, name='get_orders'),
-
+    path('', views.home, name='home'),
+    path('redirect/', views.redirect_view, name='redirect'),
 ]
