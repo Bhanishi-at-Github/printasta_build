@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from sp_api.base import AccessTokenClient
+from sp_api.base import CredentialProvider
 import os
 
 lwa_app_id = os.getenv('lwa_app_id')
@@ -32,10 +33,10 @@ def redirect_view(request):
     
     try:
         # Initialize AccessTokenClient with credentials
-        client = AccessTokenClient(lwa_client_secret, redirect_uri)
+        res = AccessTokenClient(credentials=CredentialProvider().credentials).authorize_auth_code(auth_code)
 
         # Exchange the authorization code for an access token and refresh token
-        tokens = client.exchange_auth_code_for_tokens(auth_code)
+        tokens = res.exchange_auth_code_for_tokens(auth_code)
 
         refresh_token = tokens['refresh_token']
         access_token = tokens['access_token']
