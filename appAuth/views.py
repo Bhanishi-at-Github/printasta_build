@@ -18,9 +18,6 @@ def home(request):
 
 def authorize(request):
 
-    if not lwa_app_id or not redirect_uri:
-        return HttpResponse("app_id or redirect_uri not set", status=400)
-    
     state = state_define()
     auth_url = f"https://sellercentral.amazon.com/apps/authorize/consent?application_id={lwa_app_id}&state={state}&version=beta"
 
@@ -35,17 +32,17 @@ def redirect_view(request):
     
     try:
         # Initialize AccessTokenClient with credentials
-        client = AccessTokenClient(
-            lwa_app_id=lwa_app_id,
-            lwa_client_secret=lwa_client_secret,
-            redirect_uri=redirect_uri
-        )
-        res = client.authorize_auth_code(auth_code)
-        print(res)
-        return HttpResponse("Authorization successful")
-    
-        # After successful authorization, you can store the refresh token in a secure location
-        # and use it to get access tokens in the future
+        client = AccessTokenClient(lwa_client_secret, redirect_uri)
+
+        # Exchange the authorization code for an access token and refresh token
+        tokens = client.exchange_auth_code_for_tokens(auth_code)
+
+        refresh_token = tokens['refresh_token']
+        access_token = tokens['access_token']
+
+
+
+        return HttpResponse("Authorization successful", status=200)
     
     except Exception as e:
         return HttpResponse(f"Error during authorization: {e}", status=500)

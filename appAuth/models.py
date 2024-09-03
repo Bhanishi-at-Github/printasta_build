@@ -4,12 +4,14 @@ from django.db import models
 
 class Refresh_Token(models.Model):
     
+    seller_id = models.CharField(max_length=255)
     refresh_token = models.CharField(max_length=255)
+    access_token = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.user.username
+        return self.seller_id
     
     class Meta:
         verbose_name = 'Refresh Token'
