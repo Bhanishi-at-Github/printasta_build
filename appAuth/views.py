@@ -6,11 +6,11 @@ import os
 app_id = os.getenv('app_id')
 
 def home(request):
-    
-    if not app_id:
-        raise ValueError("app_id environment variable not set")
+    return render(request, 'index.html')
 
-    return render(request, 'index.html', {'app_id': app_id})
+def authorization_url(request):
+    url = AccessTokenClient().get_authorization_url(app_id)
+    return HttpResponse(url)
 
 def redirect_view(request):
     auth_code = request.GET.get('spapi_oauth_code')
