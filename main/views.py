@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
 from sp_api.api import Orders
-from .models import Refresh_Token
+from appAuth.models import Refresh_Token
 
 # Create your views here.
 

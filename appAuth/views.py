@@ -40,8 +40,6 @@ def redirect_view(request):
         refresh_token = tokens['refresh_token']
         access_token = tokens['access_token']
 
-
-
         return HttpResponse("Authorization successful", status=200)
     
     except Exception as e:
