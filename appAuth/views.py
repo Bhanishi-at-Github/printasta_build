@@ -1,8 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from sp_api.base import AccessTokenClient
 import os
-from rest_framework.response import JsonResponse
 
 app_id = os.getenv('app_id')
 redirect_uri = os.getenv('redirect_uri')
@@ -12,18 +11,12 @@ def home(request):
 
 def authorize(request):
 
-    redirect_uri = os.getenv('redirect_uri')
+    if not app_id or not redirect_uri:
+        return HttpResponse("app_id or redirect_uri not set", status=400)
     
-    auth_url = {
+    auth_url = f"https://sellercentral.amazon.com/apps/authorize/consent?application_id={app_id}&state=stateexample&version=beta"
 
-        "base_url": "https://sellingpartnerapi-na.amazon.com/authorize",
-        "app_id": app_id,
-        "redirect_uri": redirect_uri,
-        "state": "state",
-        "version": "beta",
-    }
-
-    return JsonResponse(auth_url)
+    return redirect(auth_url)
 
 def redirect_view(request):
     auth_code = request.GET.get('spapi_oauth_code')
