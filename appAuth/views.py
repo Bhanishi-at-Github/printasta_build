@@ -6,7 +6,7 @@ import os
 app_id = os.getenv('app_id')
 
 def home(request):
-    return render(request, 'index.html')
+    return render(request, 'index.html', app_id)
 
 def authorization_url(request):
     url = AccessTokenClient().get_authorization_url(app_id)
