@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from sp_api.base import AccessTokenClient
 from sp_api.base import CredentialProvider
 import os
+from appAuth.models import Refresh_Token
 
 lwa_app_id = os.getenv('lwa_app_id')
 lwa_client_secret = os.getenv('lwa_client_secret')
@@ -27,6 +28,8 @@ def authorize(request):
 def redirect_view(request):
 
     auth_code = request.GET.get('spapi_oauth_code')
+    seller_id = request.GET.get('sellerId')
+    state = request.GET.get('state')
 
     if not auth_code:
         return HttpResponse("Error: spapi_oauth_code not received", status=400)
@@ -40,6 +43,10 @@ def redirect_view(request):
 
         refresh_token = tokens['refresh_token']
         access_token = tokens['access_token']
+
+        # Save the refresh token in the database
+        Refresh_Token.objects.create(seller_id=seller_id, refresh_token=refresh_token, access_token=access_token)
+
 
         return HttpResponse("Authorization successful", status=200)
     
