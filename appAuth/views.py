@@ -9,8 +9,8 @@ def home(request):
     return render(request, 'index.html', app_id)
 
 def authorization_url(request):
-    url = AccessTokenClient().get_authorization_url(app_id)
-    return HttpResponse(url)
+    url = 'https://sellingpartnerapi.amazon.com/authorize?response_type=code&app_id=' + app_id + '&redirect_uri=https://printasta-build.vercel.app/auth/redirect&state=state'
+    return (url)
 
 def redirect_view(request):
     auth_code = request.GET.get('spapi_oauth_code')
