@@ -8,7 +8,7 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <!-- site metas -->
-   <title>bluene</title>
+   <title>Printasta</title>
    <meta name="keywords" content="">
    <meta name="description" content="">
    <meta name="author" content="">
@@ -63,7 +63,7 @@
                               <a class="nav-link" href="#services">Services </a>
                            </li>
                            <li class="nav-item">
-                              <button id="amzn-btn" data-app_id="{{ app_id }}">Authorize</button>
+                              <a href="{{url}}" class=""><button class="btn-light">Authorize</button></a> 
                            </li>
                         </ul>
                      </div>
@@ -216,16 +216,6 @@
                </div>
             </div>
          </div>
-         <!-- <div class="copyright">
-               <div class="container">
-                  <div class="row">
-                     <div class="col-md-12">
-                        <p>Copyright 2020 All Right Reserved By<a href="https://html.design/"> Free Html Templates</a></p>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div> -->
    </footer>
    <!-- end footer -->
    <!-- Javascript files-->
@@ -234,21 +224,6 @@
    <script src="{% static 'js/jquery-3.0.0.min.js' %}"></script>
    <script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
    <script src="{% static 'js/custom.js' %}"></script>
-   <script>
-      const url = (app_id) => `https://sellercentral.amazon.com/apps/authorize/consent?application_id=${app_id}&version=beta`
-
-      const link = (link) => {
-         const el = document.createElement('a');
-         el.href = link;
-         el.target = '_blank';
-         el.click();
-      }
-
-      const element = document.getElementById('amzn-btn');
-
-      element.addEventListener('click', (e) => link(url('{{ app_id }}')));
-
-   </script>
 </body>
 
 </html>
