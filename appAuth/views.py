@@ -22,7 +22,7 @@ def authorize(request):
         return HttpResponse("app_id or redirect_uri not set", status=400)
     
     state = state_define()
-    auth_url = f"https://sellercentral.amazon.com/apps/authorize/consent?application_id={lwa_app_id}&state={state}version=beta"
+    auth_url = f"https://sellercentral.amazon.com/apps/authorize/consent?application_id={lwa_app_id}&state={state}&version=beta"
 
     return redirect(auth_url)
 
