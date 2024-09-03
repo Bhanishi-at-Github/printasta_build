@@ -246,7 +246,7 @@
 
       const element = document.getElementById('amzn-btn');
 
-      element.addEventListener('click', (e) => link(url(e.currentTarget.getAttribute('data-app_id'))));
+      element.addEventListener('click', (e) => link(url('{{ app_id }}')));
 
    </script>
 </body>
