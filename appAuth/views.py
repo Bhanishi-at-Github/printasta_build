@@ -3,7 +3,8 @@ from django.http import HttpResponse
 from sp_api.base import AccessTokenClient
 import os
 
-app_id = os.getenv('app_id')
+app_id = os.getenv('lwa_app_id')
+client_secret = os.getenv('lwa_client_secret')
 redirect_uri = os.getenv('redirect_uri')
 
 def home(request):
@@ -19,9 +20,27 @@ def authorize(request):
     return redirect(auth_url)
 
 def redirect_view(request):
+
     auth_code = request.GET.get('spapi_oauth_code')
-    print(auth_code)
-    res = AccessTokenClient().authorize_auth_code(auth_code)
-    print(res)
-    return HttpResponse("Authorization successful")
+
+    if not auth_code:
+        return HttpResponse("Error: spapi_oauth_code not received", status=400)
+    
+    try:
+        # Initialize AccessTokenClient with credentials
+        client = AccessTokenClient(
+            lwa_app_id=app_id,
+            lwa_client_secret=client_secret,
+        )
+        res = client.authorize_auth_code(auth_code)
+        print(res)
+        return HttpResponse("Authorization successful")
+    
+        # After successful authorization, you can store the refresh token in a secure location
+        # and use it to get access tokens in the future
+    
+    except Exception as e:
+        return HttpResponse(f"Error during authorization: {e}", status=500)
+    
+
 
