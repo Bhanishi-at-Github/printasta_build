@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from sp_api.base import AccessTokenClient
 import os
-from rest_framework.response import Response
+from rest_framework.response import JsonResponse
 
 app_id = os.getenv('app_id')
 redirect_uri = os.getenv('redirect_uri')
@@ -23,7 +23,7 @@ def authorize(request):
         "version": "beta",
     }
 
-    return Response(auth_url)
+    return JsonResponse(auth_url)
 
 def redirect_view(request):
     auth_code = request.GET.get('spapi_oauth_code')
