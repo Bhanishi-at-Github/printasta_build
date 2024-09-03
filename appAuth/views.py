@@ -14,3 +14,4 @@ def redirect_view(request):
     res = AccessTokenClient().authorize_auth_code(auth_code)
     print(res)
     return HttpResponse("Authorization successful")
+
