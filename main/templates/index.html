@@ -63,7 +63,7 @@
                               <a class="nav-link" href="#services">Services </a>
                            </li>
                            <li class="nav-item">
-                              <button id="amzn-btn" data-appId="{{ app_id }}">Authorize</button>
+                              <button id="amzn-btn" data-app_id="{{ app_id }}">Authorize</button>
                            </li>
                         </ul>
                      </div>
@@ -246,7 +246,7 @@
 
       const element = document.getElementById('amzn-btn');
 
-      element.addEventListener('click', (e) => link(url(e.currentTarget.getAttribute('data-appId'))));
+      element.addEventListener('click', (e) => link(url(e.currentTarget.getAttribute('data-app_id'))));
 
    </script>
 </body>
