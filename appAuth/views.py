@@ -18,9 +18,8 @@ def state_define():
 def authorize(request):
 
     state = state_define()
-
+    
     auth_url = f"https://sellercentral.amazon.com/apps/authorize/consent?application_id={lwa_app_id}&state={state}&version=beta"
-
     return redirect(auth_url)
 
 def redirect_view(request):
@@ -40,7 +39,7 @@ def redirect_view(request):
         payload = {
             'grant_type': 'authorization_code',
             'code': auth_code,
-            'app_id': lwa_app_id,
+            'client_id': lwa_client_id,
             'client_secret': lwa_client_secret,
             'redirect_uri': redirect_uri
         }
