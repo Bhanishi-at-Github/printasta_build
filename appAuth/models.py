@@ -17,4 +17,10 @@ class Refresh_Token(models.Model):
         verbose_name = 'Refresh Token'
         verbose_name_plural = 'Refresh Tokens'
 
+        permissions = [
+            ('can_manage_refresh_tokens', 'Can manage Refresh Tokens'),
+        ]
+
+        
+
         
