@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
-from sp_api.api import Orders
+from sp_api.api import FulfillmentInbound
 import os
 
 # Create your views here.
@@ -8,19 +8,14 @@ import os
 def home(request):
     return render(request, 'index.html')
 
-def orders(request):
+def fba_Inventory(request):
 
     refresh_token= os.getenv('refresh_token')
-    try:
-        # Initialize Orders with credentials
-        orders = Orders(refresh_token=refresh_token)
-        orders.get_orders()
 
-        # Display the orders
-        data = orders.payload
+    api = FulfillmentInbound(refresh_token=refresh_token)
+    response = api.get_transport_details()
 
-        return JsonResponse("Orders fetched successfully", data=data, status=200)
+    return JsonResponse(response)
+
     
-    except Exception as e:
-        return HttpResponse(f"Error during fetching orders: {e}", status=500)
-    
+
