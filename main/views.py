@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse, JsonResponse
 from sp_api.api import Orders
 import os
 
@@ -15,7 +15,10 @@ def orders(request):
         orders = Orders(refresh_token=refresh_token)
         orders.get_orders()
 
-        return HttpResponse("Orders fetched successfully", status=200)
+        # Display the orders
+        data = orders.payload
+
+        return JsonResponse("Orders fetched successfully", data=data, status=200)
     
     except Exception as e:
         return HttpResponse(f"Error during fetching orders: {e}", status=500)

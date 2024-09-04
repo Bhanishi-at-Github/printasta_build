@@ -54,8 +54,6 @@ def redirect_view(request):
         # # Save the refresh token in the database
         # Refresh_Token.objects.create(seller_id=seller_id, refresh_token=refresh_token, access_token=access_token)
 
-        
-
         return JsonResponse(
             {
                 'message': 'Authorization successful',
