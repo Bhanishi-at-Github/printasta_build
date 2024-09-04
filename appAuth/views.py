@@ -2,31 +2,26 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import os
 import requests
-from .models import Refresh_Token
+from .models import Refresh_Token  # Ensure you have this model defined
 
-# Credentials from the environment variables
+
 lwa_app_id = os.getenv('lwa_app_id')
-lwa_client_id = os.getenv('lwa_client_id')
 lwa_client_secret = os.getenv('lwa_client_secret')
 redirect_uri = os.getenv('redirect_uri')
 
 def state_define():
-
     # Define your state generation logic
+    
     return "stateexample"
 
 def authorize(request):
-
     state = state_define()
-    
     auth_url = f"https://sellercentral.amazon.com/apps/authorize/consent?application_id={lwa_app_id}&state={state}&version=beta"
     return redirect(auth_url)
 
 def redirect_view(request):
-    
     auth_code = request.GET.get('spapi_oauth_code')
     seller_id = request.GET.get('seller_id')  
-
     # Assuming seller_id is passed as a query parameter
 
     if not auth_code:
