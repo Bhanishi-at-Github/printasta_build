@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect, HttpResponse, JsonResponse
+from django.shortcuts import render, HttpResponse
+from django.http import JsonResponse
 from sp_api.api import Orders
 import os
 
