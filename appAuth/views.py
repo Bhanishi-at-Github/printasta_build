@@ -1,45 +1,43 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from sp_api.base import AccessTokenClient
-from sp_api.base import CredentialProvider
 import os
 import requests
-from appAuth.models import Refresh_Token
+from .models import Refresh_Token
 
+# Credentials from the environment variables
 lwa_app_id = os.getenv('lwa_app_id')
+lwa_client_id = os.getenv('lwa_client_id')
 lwa_client_secret = os.getenv('lwa_client_secret')
 redirect_uri = os.getenv('redirect_uri')
 
-
 def state_define():
-    import random
-    state = ''.join(random.choices('abcdefghijklmnopqrstuvwxyz0123456789', k=14))
-    return state
 
-def home(request):
-    return render(request, 'index.html', lwa_app_id)
+    # Define your state generation logic
+    return "stateexample"
 
 def authorize(request):
-
     state = state_define()
     auth_url = f"https://sellercentral.amazon.com/apps/authorize/consent?application_id={lwa_app_id}&state={state}&version=beta"
-
     return redirect(auth_url)
 
 def redirect_view(request):
+    
     auth_code = request.GET.get('spapi_oauth_code')
-    seller_id = request.GET.get('seller_id')  # Assuming seller_id is passed as a query parameter
+    seller_id = request.GET.get('seller_id')  
+
+    # Assuming seller_id is passed as a query parameter
 
     if not auth_code:
         return HttpResponse("Error: spapi_oauth_code not received", status=400)
     
     try:
+
         # Define the token endpoint and payload
         token_url = "https://api.amazon.com/auth/o2/token"
         payload = {
             'grant_type': 'authorization_code',
             'code': auth_code,
-            'client_id': lwa_app_id,
+            'client_id': lwa_client_id,
             'client_secret': lwa_client_secret,
             'redirect_uri': redirect_uri
         }
