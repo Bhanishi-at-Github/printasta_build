@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 import os
 import requests
+from django.http import JsonResponse
 from .models import Refresh_Token  # Ensure you have this model defined
 
 
@@ -50,10 +51,18 @@ def redirect_view(request):
         refresh_token = response_data['refresh_token']
         access_token = response_data['access_token']
 
-        # Save the refresh token in the database
-        Refresh_Token.objects.create(seller_id=seller_id, refresh_token=refresh_token, access_token=access_token)
+        # # Save the refresh token in the database
+        # Refresh_Token.objects.create(seller_id=seller_id, refresh_token=refresh_token, access_token=access_token)
 
-        return HttpResponse("Authorization successful", status=200)
+        
+
+        return JsonResponse(
+            {
+                'message': 'Authorization successful',
+                'refresh_token': refresh_token,
+                'access_token': access_token
+            }
+        )
     
     except Exception as e:
         return HttpResponse(f"Error during authorization: {e}", status=500)
