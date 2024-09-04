@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
 from sp_api.api import Orders
-from appAuth.models import Refresh_Token
+import os
 
 # Create your views here.
 
@@ -9,9 +9,10 @@ def home(request):
 
 def orders(request):
 
+    refresh_token= os.getenv('refresh_token')
     try:
         # Initialize Orders with credentials
-        orders = Orders(refresh_token=Refresh_Token.objects.last().refresh_token)
+        orders = Orders(refresh_token=refresh_token)
         orders.get_orders()
 
         return HttpResponse("Orders fetched successfully", status=200)
