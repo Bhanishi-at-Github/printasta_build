@@ -39,7 +39,7 @@ def redirect_view(request):
         payload = {
             'grant_type': 'authorization_code',
             'code': auth_code,
-            'client_id': lwa_client_id,
+            'client_id': lwa_app_id,
             'client_secret': lwa_client_secret,
             'redirect_uri': redirect_uri
         }
