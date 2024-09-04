@@ -6,12 +6,13 @@ from .models import Refresh_Token  # Ensure you have this model defined
 
 
 lwa_app_id = os.getenv('lwa_app_id')
+lwa_client_id = os.getenv('lwa_client_id')
 lwa_client_secret = os.getenv('lwa_client_secret')
 redirect_uri = os.getenv('redirect_uri')
 
 def state_define():
     # Define your state generation logic
-    
+
     return "stateexample"
 
 def authorize(request):
@@ -34,7 +35,7 @@ def redirect_view(request):
         payload = {
             'grant_type': 'authorization_code',
             'code': auth_code,
-            'client_id': lwa_app_id,
+            'client_id': lwa_client_id,
             'client_secret': lwa_client_secret,
             'redirect_uri': redirect_uri
         }
