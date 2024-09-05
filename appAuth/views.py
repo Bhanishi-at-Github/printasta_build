@@ -62,10 +62,6 @@ def state_define():
 
     return state
 
-# f"https://sellercentral.amazon.com/apps/authorize/consent?
-# application_id={lwa_app_id}
-# &state={state}
-# &version=beta"
 
 def authorize(request):
     '''This function redirects the user to the Amazon authorization page.'''
