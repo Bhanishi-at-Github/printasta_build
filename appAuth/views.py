@@ -35,11 +35,11 @@ def register_user(request):
                 seller_name=seller_name,
                 email=email,
             )
-            
+
             user.set_password(password)
             user.save()
 
-            return redirect(request, authorize)
+            return redirect(request, 'authorize.html')
 
         except Exception as e:
 
