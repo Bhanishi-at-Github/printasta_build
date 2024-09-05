@@ -80,38 +80,40 @@ v{% load static %}
 
     <!-- Form -->
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="login-box">
-                    <h2>Register</h2>
-                    <form action="{% url 'register_user' %}" method="POST">
-                        {% csrf_token %}
-                        <div class="user-box">
-                            <label for="seller_name">Seller Name</label>
-                            <input type="text" id="seller_name" name="seller_name" required="">
-                        </div>
-                        <div class="user-box">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required="">
-                        </div>
-                        <div class="user-box">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password" required="">
-                        </div>
-                        <button type="submit">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                            Submit
-                        </button>
-                    </form>
+    <section>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="login-box">
+                        <h2>Register</h2>
+                        <form action="{% url 'register_user' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="user-box">
+                                <label for="seller_name">Seller Name</label>
+                                <input type="text" id="seller_name" name="seller_name" required="">
+                            </div>
+                            <div class="user-box">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required="">
+                            </div>
+                            <div class="user-box">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" name="password" required="">
+                            </div>
+                            <button type="submit">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                                Submit
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-
+    </section>
     <!-- end Form -->
 
     <!-- Javascript files-->
