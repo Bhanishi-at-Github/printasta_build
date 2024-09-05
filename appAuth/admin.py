@@ -4,7 +4,7 @@ AppAuth Admin
 '''
 
 from django.contrib import admin
-from .models import Refresh_Token
+from .models import RefreshToken
 
 # Register your models here.
-admin.site.register(Refresh_Token)
+admin.site.register(RefreshToken)
