@@ -31,11 +31,13 @@ def register_user(request):
             if User.objects.filter(email=email).exists():
                 return HttpResponse("Error: User already exists", status=400)
 
-            User.objects.create(
+            user = User.objects.create(
                 seller_name=seller_name,
                 email=email,
-                password=password
             )
+            
+            user.set_password(password)
+            user.save()
 
             return redirect(request, authorize)
 
