@@ -102,6 +102,7 @@ def redirect_view(request):
             )
 
         refresh_token = response_data['refresh_token']
+        
         access_token = response_data['access_token']
 
         # Refresh_Token.objects.create(

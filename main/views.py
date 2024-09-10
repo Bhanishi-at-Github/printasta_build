@@ -13,19 +13,25 @@ def home(request):
     return render(request, 'index.html')
 
 def fba_Inventory(request):
+
     refresh_token = os.getenv('refresh_token')
 
+    # Validate refresh token
     if not refresh_token:
-        logging.error("Refresh token not found in environment variables")
-        return HttpResponse("Server configuration error: Refresh token not found", status=500)
+        return JsonResponse({'error': 'Refresh token not found'})
+    
+    # Create an instance of the FulfillmentInbound class
+    fba = FulfillmentInbound(refresh_token=refresh_token)
 
+    # Get inventory
     try:
-        # Initialize FulfillmentInbound with credentials
-        api = FulfillmentInbound(refresh_token=refresh_token)
-        response = api.get_transport_details()
-
-        return JsonResponse(response, safe=False)
-
+        inventory = fba.get_inventory()
+        return JsonResponse(inventory)
+    
     except Exception as e:
-        logging.error(f"Error during fetching inventory: {e}")
-        return HttpResponse(f"Error during fetching inventory: {e}", status=500)
+        return JsonResponse({'error': str(e)})
+    
+
+
+
+
