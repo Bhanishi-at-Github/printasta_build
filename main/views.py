@@ -26,12 +26,13 @@ def fba_Inventory(request):
     # Get inventory
     try:
         inventory = fba.get_inventory()
-        return JsonResponse(inventory)
+        
+        payload = {
+            'inventory': inventory
+        }
+
+        return JsonResponse(payload)
     
     except Exception as e:
         return JsonResponse({'error': str(e)})
     
-
-
-
-
