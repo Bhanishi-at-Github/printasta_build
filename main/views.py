@@ -25,13 +25,16 @@ def fba_Inventory(request):
 
     # Get inventory
     try:
-        inventory = fba.get_inventory()
-        
-        payload = {
-            'inventory': inventory
-        }
+        api = fba.get_transport_information()
 
-        return JsonResponse(payload)
+        # Get the response
+        response = api.payload({
+            'transportDetails': api.payload['TransportDetails'],
+            'shipmentId': api.payload['ShipmentId'],
+            'status': api.payload['Status'],
+        })
+
+        return JsonResponse(response)
     
     except Exception as e:
         return JsonResponse({'error': str(e)})
