@@ -22,7 +22,7 @@ def fba_Inventory(request):
     
     # Create an instance of the FulfillmentInbound class
     confuse_dir_value = os.getenv('CONFUSE_DIR')
-    fba = FulfillmentInbound(refresh_token=refresh_token, confuse_dir=confuse_dir_value)
+    fba = FulfillmentInbound(refresh_token=refresh_token)
 
     # Get inventory
     try:
