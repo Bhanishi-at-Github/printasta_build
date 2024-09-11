@@ -14,9 +14,9 @@ def home(request):
 
 def test(request):
 
-    refresh_token = os.getenv('SP_REFRESH_TOKEN')
-    client_id = os.getenv('SP_API_CLIENT_ID')
-    client_secret = os.getenv('SP_API_CLIENT_SECRET')
+    refresh_token = os.getenv('refresh_token')
+    client_id = os.getenv('lwa_client_id')
+    client_secret = os.getenv('lwa_client_secret')
     
 
     if not all([refresh_token, client_id, client_secret]):
