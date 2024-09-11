@@ -19,7 +19,7 @@ def test(request):
     client_secret = os.getenv('lwa_client_secret')
     
 
-    if not all([refresh_token, client_id, client_secret]):
+    if not all([refresh_token, app_id, client_secret]):
         logging.error("One or more environment variables are missing")
         return HttpResponse("Server configuration error: Missing environment variables", status=500)
 
