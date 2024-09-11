@@ -15,7 +15,7 @@ def home(request):
 def test(request):
 
     refresh_token = os.getenv('refresh_token')
-    client_id = os.getenv('lwa_client_id')
+    app_id = os.getenv('lwa_app_id')
     client_secret = os.getenv('lwa_client_secret')
     
 
@@ -27,7 +27,7 @@ def test(request):
         # Create a reports API client
         reports = Reports(
             refresh_token=refresh_token,
-            lwa_app_id=client_id,
+            lwa_app_id=app_id,
             lwa_client_secret=client_secret
         )
 
@@ -40,7 +40,7 @@ def test(request):
 
         logging.error(f"An error occurred: {e}")
         content = {
-            "error": e
+            "error": {e}
         }
         error_code = 500
 
