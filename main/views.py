@@ -23,5 +23,5 @@ def test(request):
     # Get the report document
     report_document = reports.get_report_document(report_document_id='GET_SELLER_FEEDBACK_DATA')
 
-    return HttpResponse(report_document)
+    return render(request, 'test.html', {'content': report_document})
 
