@@ -21,7 +21,8 @@ def fba_Inventory(request):
         return JsonResponse({'error': 'Refresh token not found'})
     
     # Create an instance of the FulfillmentInbound class
-    fba = FulfillmentInbound(refresh_token=refresh_token, confuse_dir=os.getenv('CONFUSE_DIR'))
+    confuse_dir_value = os.getenv('CONFUSE_DIR')
+    fba = FulfillmentInbound(refresh_token=refresh_token, confuse_dir=confuse_dir_value)
 
     # Get inventory
     try:
