@@ -107,6 +107,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CONFUSE_DIR = '/temp/confuse'
+os.makedirs(CONFUSE_DIR, exist_ok=True)
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'main/static')]
