@@ -3,5 +3,5 @@ from main import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    # path('inventory/', views.fba_Inventory, name='inventory'),
+    path('test/', views.marketplaces, name='test'),
 ]
