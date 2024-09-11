@@ -15,20 +15,18 @@ def home(request):
 def test(request):
 
     refresh_token = os.getenv('refresh_token')
-    app_id = os.getenv('lwa_app_id')
-    client_secret = os.getenv('lwa_client_secret')
+    # app_id = os.getenv('lwa_app_id')
+    # client_secret = os.getenv('lwa_client_secret')
     
 
-    if not all([refresh_token, app_id, client_secret]):
+    if not refresh_token:
         logging.error("One or more environment variables are missing")
         return HttpResponse("Server configuration error: Missing environment variables", status=500)
 
     try:
         # Create a reports API client
         reports = Reports(
-            refresh_token=refresh_token,
-            lwa_app_id=app_id,
-            lwa_client_secret=client_secret
+            refresh_token=refresh_token
         )
 
         # Get the report document
