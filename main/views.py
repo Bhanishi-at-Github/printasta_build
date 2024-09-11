@@ -39,4 +39,7 @@ def test(request):
     except Exception as e:
 
         logging.error(f"An error occurred: {e}")
-        return HttpResponse("An error occurred", status=500)
+        content = {
+            "error": e
+        }
+        return render(request, 'error.html', {'code': e.code,'content': content})
