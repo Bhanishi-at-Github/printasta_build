@@ -14,14 +14,29 @@ def home(request):
 
 def test(request):
 
-    # Get the refresh token from the environment
     refresh_token = os.getenv('SP_REFRESH_TOKEN')
+    client_id = os.getenv('SP_API_CLIENT_ID')
+    client_secret = os.getenv('SP_API_CLIENT_SECRET')
+    
 
-    # Create a reports API client
-    reports = Reports(refresh_token=refresh_token)
+    if not all([refresh_token, client_id, client_secret]):
+        logging.error("One or more environment variables are missing")
+        return HttpResponse("Server configuration error: Missing environment variables", status=500)
 
-    # Get the report document
-    report_document = reports.get_report_document(report_document_id='GET_SELLER_FEEDBACK_DATA')
+    try:
+        # Create a reports API client
+        reports = Reports(
+            refresh_token=refresh_token,
+            lwa_app_id=client_id,
+            lwa_client_secret=client_secret
+        )
 
-    return render(request, 'test.html', {'content': report_document})
+        # Get the report document
+        report_document = reports.get_report_document(report_document_id='GET_SELLER_FEEDBACK_DATA')
 
+        return render(request, 'test.html', {'content': report_document})
+    
+    except Exception as e:
+
+        logging.error(f"An error occurred: {e}")
+        return HttpResponse("An error occurred", status=500)
