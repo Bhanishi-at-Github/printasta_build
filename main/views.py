@@ -38,7 +38,7 @@ def test(request):
 
         logging.error(f"An error occurred: {e}")
         content = {
-            "error": {e}
+            "error": e
         }
         error_code = 500
 
