@@ -107,8 +107,10 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CONFUSE_DIR = '/temp/confuse'
-os.makedirs(CONFUSE_DIR, exist_ok=True)
+import tempfile
+
+CONFUSE_DIR = tempfile.TemporaryDirectory()
+os.environ['CONFUSE_DIR'] = CONFUSE_DIR.name
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'main/static')]
