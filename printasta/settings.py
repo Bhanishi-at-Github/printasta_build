@@ -73,7 +73,7 @@ WSGI_APPLICATION = 'printasta.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db/db.sqlite3',
     }
 
 }
@@ -107,10 +107,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-import tempfile
-
-CONFUSE_DIR = tempfile.TemporaryDirectory()
-os.environ['CONFUSE_DIR'] = CONFUSE_DIR.name
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'main/static')]
