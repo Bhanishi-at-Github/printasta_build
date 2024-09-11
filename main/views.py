@@ -26,17 +26,10 @@ def fba_Inventory(request):
 
     # Get inventory
     try:
-        api = fba.get_transport_information()
-
-        # Get the response
-        response = api.payload({
-            'transportDetails': api.payload['TransportDetails'],
-            'shipmentId': api.payload['ShipmentId'],
-            'status': api.payload['Status'],
-        })
-
-        return JsonResponse(response)
-    
+        # get inventory data in pdf format
+        response = fba.get_inventory_preview()
+        return HttpResponse(response, content_type='application/pdf')
+        
     except Exception as e:
         return JsonResponse({'error': str(e)})
     
