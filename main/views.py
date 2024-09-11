@@ -42,4 +42,6 @@ def test(request):
         content = {
             "error": e
         }
-        return render(request, 'error.html', {'code': e.code,'content': content})
+        error_code = 500
+
+        return render(request, 'error.html', {'code': error_code,'content': content})
