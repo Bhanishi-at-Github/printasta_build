@@ -6,7 +6,7 @@ charset-normalizer==3.3.2
 colorama==0.4.6
 confuse==2.0.1
 dill==0.3.8
-Django==4.1.13
+Django==5.1.1
 djangorestframework==3.15.2
 dnspython==2.6.1
 idna==3.7
