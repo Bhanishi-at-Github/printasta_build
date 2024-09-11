@@ -1,8 +1,7 @@
 from django.shortcuts import render, HttpResponse
-from django.http import JsonResponse
-from sp_api.api import FulfillmentInbound
 import os
 import logging
+from sp_api.base import Marketplaces
 
 # Configure logging
 logging.basicConfig(level=logging.ERROR)
@@ -12,4 +11,6 @@ logging.basicConfig(level=logging.ERROR)
 def home(request):
     return render(request, 'index.html')
 
-    
+
+def marketplaces(request):
+    return HttpResponse(Marketplaces.get_marketplaces())
