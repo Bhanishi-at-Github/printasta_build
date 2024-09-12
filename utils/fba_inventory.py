@@ -32,7 +32,6 @@ def get_inventory(endpoint):
     orders = Orders(
         marketplace='US',
         refresh_token=os.getenv('refresh_token'),
-        access_token=access_token['access_token'],
     )
     response = orders.get_orders()
     print ('Getting Response for Inventory')
