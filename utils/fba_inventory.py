@@ -31,7 +31,7 @@ def get_inventory(endpoint):
     response = requests.get(endpoint, headers=headers, data=payload)
 
     # Check if the request was successful
-    if response is None and response.status_code == 200:
+    if response is not None and response.status_code == 200:
         try:
             data = response.json()
             print('Returning Response')
