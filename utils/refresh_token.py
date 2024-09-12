@@ -35,27 +35,18 @@ def generate_access_token():
 
     # Check if the request was successful
 
-    if response is not None:
+    if response is not None and response.status_code == 200:
 
-        print(f'Response Status Code: {response.status_code}')
-        print(f'Response Content: {response.text}')
 
-        if response.status_code == 200:
-
-            try:
-                data = response.json()
-                print('Returning Response')
-                return data['access_token']
+        try:
+            data = response.json()
+            print('Returning Response')
+            return data
             
-            except json.JSONDecodeError as e:
-                print(f'JSON Decode Error: {e}')
-                return {'error': 'Failed to parse JSON response'}
-        else:
-            print('Unsuccessful Response')
-            return {'error': f'Failed to generate access token, status code: {response.status_code}'}
-        
+        except json.JSONDecodeError as e:
+            print(f'JSON Decode Error: {e}')
+            return {'error': 'Failed to parse JSON response'}
     else:
-        # Return an error message
-        print('No Response')
-        return {'error': 'No response from server'}
+        print('Unsuccessful Response')
+        return {'error': f'Failed to generate access token, status code: {response.status_code}'}
     

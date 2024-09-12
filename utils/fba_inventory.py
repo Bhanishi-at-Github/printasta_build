@@ -13,8 +13,8 @@ def get_inventory(endpoint):
     # Generate Access token using refresh token
 
     access_token = generate_access_token()
-    print ('Getting Access Token', access_token)
-    
+    print ('Getting Access Token')
+
     # Define the headers
     headers = {
         'Content-Type': 'application/json',
@@ -32,33 +32,32 @@ def get_inventory(endpoint):
     print ('Getting Payload')
 
     # Make the request
-    response = requests.post(endpoint, headers=headers, data=json.dumps(payload))
-    print ('Getting Response', response)
+
+    if payload is not None:
+
+        response = requests.post(endpoint, headers=headers, data=json.dumps(payload))
+        print ('Getting Response', response)
 
     # Check if the request was successful
-    if response is not None:
-        print(f'Response Status Code: {response.status_code}')
-        print(f'Response Content: {response.text}')
-
-        if response.status_code == 200:
+        if response is not None and response.status_code == 200:
 
             try:
                 data = response.json()
                 print('Returning Response')
                 return data
-            
+                
             except json.JSONDecodeError as e:
                 print(f'JSON Decode Error: {e}')
                 return {'error': 'Failed to parse JSON response'}
+            
         else:
-            print('Unsuccessful Response')
-            return {'error': f'Failed to retrieve inventory, status code: {response.status_code}'}
+            # Return an error message
+            print('No Response')
+            return {'error': 'No response from server'}    
+        
     else:
-        # Return an error message
-        print('No Response')
-        return {'error': 'No response from server'}    
-    
-    
+        print('No Payload')
+        return {'error': 'No payload provided'}
 
 
 
