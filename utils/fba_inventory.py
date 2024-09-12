@@ -5,13 +5,10 @@ Retrive the inventory of a FBA warehouse
 import requests
 import json
 
-def get_inventory():
+def get_inventory(endpoint):
 
     '''Function to retrieve the inventory of a FBA without involving the database'''
 
-    # Define the endpoint
-    endpoint = 'https://api.amazon.com/fba/inventory/v1/summaries'
-    print ('Getting Endpoint')
 
     # Define the headers
     headers = {
@@ -39,7 +36,7 @@ def get_inventory():
         print(f'Response Content: {response.text}')
 
         if response.status_code == 200:
-            
+
             try:
                 data = response.json()
                 print('Returning Response')

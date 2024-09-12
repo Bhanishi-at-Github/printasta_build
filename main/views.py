@@ -12,10 +12,11 @@ def home(request):
 
 def test(request):
 
-    try:
+    endpoint = 'https://api.amazon.com/fba/inventory'
 
+    try:
         # Retrieve the inventory
-        inventory = get_inventory()
+        inventory = get_inventory(endpoint)
         return render(request, 'test.html', {'content': inventory})
     
     except Exception as e:
@@ -24,5 +25,5 @@ def test(request):
         logging.error(str(e))
 
         # Return an error message
-        return render(request, 'error.html', {'content': 'An error occurred'})
+        return render(request, 'error.html', {'content': {'error': 'Failed to retrieve inventory'}})
 
