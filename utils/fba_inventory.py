@@ -34,19 +34,18 @@ def get_inventory():
     print ('Getting Response')
 
     # Check if the request was successful
-    if response.status_code == 200:
+    if response is not None:
 
         # Return the inventory
         print ('Returning Response')
         data = response.json()
-
         return data
         
-    
     else:
         # Return an error message
-        return {'error': 'Failed to retrieve inventory'}
         print ('Unsuccessful Response')
+        return {'error': 'Failed to retrieve inventory'}
+        
     
     
 
