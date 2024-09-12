@@ -8,7 +8,7 @@ import os
 
 client_id = os.getenv('lwa_client_id')
 client_secret = os.getenv('lwa_client_secret')
-refresh_token = os.getenv('lwa_refresh_token')
+refresh_token = os.getenv('refresh_token')
 
 
 def generate_access_token():
