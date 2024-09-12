@@ -9,7 +9,6 @@ def get_inventory(endpoint):
 
     '''Function to retrieve the inventory of a FBA without involving the database'''
 
-
     # Define the headers
     headers = {
         'Content-Type': 'application/json',
