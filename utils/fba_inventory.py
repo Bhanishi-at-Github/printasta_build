@@ -37,12 +37,11 @@ def get_inventory():
     if response.status_code == 200:
 
         # Return the inventory
-        return {
-
-            'message': 'Inventory retrieved successfully',
-            'data': response.json()
-        }
         print ('Returning Response')
+        data = response.json()
+
+        return data
+        
     
     else:
         # Return an error message
