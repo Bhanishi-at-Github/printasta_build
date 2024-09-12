@@ -16,14 +16,14 @@ def get_inventory():
     # Define the headers
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer '
+        'Authorization': 'Bearer'
     }
     print ('Getting Headers')
 
     # Define the payload
     payload = {
         'granularity': 'US',
-        'granularityId': 'ATVPDKIKX0DER',
+        'granularityId': 'ATVPDKIKX0DER', 
         'startDateTime': '2024-07-01T00:00:00Z',
         'endDateTime': '2024-08-31T23:59:59Z'
     }
@@ -31,7 +31,7 @@ def get_inventory():
 
     # Make the request
     response = requests.post(endpoint, headers=headers, data=json.dumps(payload))
-    print ('Getting Response')
+    print ('Getting Response', response)
 
     # Check if the request was successful
     if response is not None:
@@ -39,10 +39,12 @@ def get_inventory():
         print(f'Response Content: {response.text}')
 
         if response.status_code == 200:
+            
             try:
                 data = response.json()
                 print('Returning Response')
                 return data
+            
             except json.JSONDecodeError as e:
                 print(f'JSON Decode Error: {e}')
                 return {'error': 'Failed to parse JSON response'}
