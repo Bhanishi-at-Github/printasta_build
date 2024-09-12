@@ -5,7 +5,7 @@ Retrive the inventory of a FBA warehouse
 import json
 import os
 import io
-from django.shortcuts import redirect
+from django.shortcuts import redirect, HttpResponse
 from sp_api.api import Orders
 
 def get_inventory(endpoint):
@@ -27,13 +27,14 @@ def get_inventory(endpoint):
     if response.status_code == 200:
 
         print ('Successful Response')
-        
+
         try:
             # Use in-memory storage instead of writing to a file
-            temp_storage = io.StringIO()
-            temp_storage.write(response.text)
-            temp_storage.seek(0)  # Reset cursor to the beginning if you need to read it later
-            return json.loads(temp_storage.read())  # Example of reading from in-memory storage
+            inventory = io.StringIO()
+            inventory.write(response.text)
+            inventory.seek(0)
+            print ('Inventory retrieved')
+            return HttpResponse(inventory, content_type='application/json')
 
         except json.JSONDecodeError as e:
             print(f'JSON Decode Error: {e}')
