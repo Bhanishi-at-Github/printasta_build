@@ -4,51 +4,50 @@ Retrive the inventory of a FBA warehouse
 
 import requests
 import json
-import os
-from datetime import datetime
-from django.conf import settings
 
 def get_inventory():
 
     '''Function to retrieve the inventory of a FBA without involving the database'''
 
     # Define the endpoint
-
     endpoint = 'https://api.amazon.com/fba/inventory/v1/summaries'
+    print ('Getting Endpoint')
 
     # Define the headers
-
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer '
     }
+    print ('Getting Headers')
 
     # Define the payload
-
     payload = {
         'granularity': 'Marketplace',
         'granularityId': 'ATVPDKIKX0DER',
         'startDateTime': '2021-01-01T00:00:00Z',
         'endDateTime': '2021-12-31T23:59:59Z'
     }
+    print ('Getting Payload')
 
     # Make the request
-
     response = requests.post(endpoint, headers=headers, data=json.dumps(payload))
+    print ('Getting Response')
 
     # Check if the request was successful
-
     if response.status_code == 200:
 
         # Return the inventory
+        return {
 
-        return response.json()
+            'message': 'Inventory retrieved successfully',
+            'data': response.json()
+        }
+        print ('Returning Response')
     
     else:
-
         # Return an error message
-
         return {'error': 'Failed to retrieve inventory'}
+        print ('Unsuccessful Response')
     
     
 

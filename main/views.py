@@ -12,5 +12,17 @@ def home(request):
 
 def test(request):
 
-    inventory = get_inventory()
-    return render(request, 'test.html', {'content': inventory})
+    try:
+
+        # Retrieve the inventory
+        inventory = get_inventory()
+        return render(request, 'test.html', {'content': inventory})
+    
+    except Exception as e:
+
+        # Log the error
+        logging.error(str(e))
+
+        # Return an error message
+        return render(request, 'error.html', {'content': 'An error occurred'})
+
