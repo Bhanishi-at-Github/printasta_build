@@ -73,12 +73,11 @@ WSGI_APPLICATION = 'printasta.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'printasta',
-        'USER': 'postgres',
-        'PASSWORD': 'patiencebs',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-
+        'NAME': os.getenv('POSTGRES_DATABASE'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'URL': os.getenv('POSTGRES_URL')
     }
 }
 
