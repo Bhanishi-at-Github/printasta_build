@@ -3,6 +3,7 @@ Retrive the inventory of a FBA warehouse
 '''
 
 import json
+import os
 from django.shortcuts import redirect
 from utils.refresh_token import generate_access_token
 from sp_api.api import Orders
@@ -28,7 +29,11 @@ def get_inventory(endpoint):
     print ('Getting Payload for Inventory')
 
     # Make the request
-    orders = Orders(access_token=access_token["access_token"], region='NA')
+    orders = Orders(
+        marketplace='US',
+        refresh_token=os.getenv('refresh_token'),
+        access_token=access_token['access_token'],
+    )
     response = orders.get_orders()
     print ('Getting Response for Inventory')
 
