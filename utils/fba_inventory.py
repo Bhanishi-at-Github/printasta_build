@@ -15,15 +15,6 @@ def get_inventory(endpoint):
 
     # Generate a new access token
     endpoint = endpoint
-    access_token = generate_access_token()
-    print ('Getting Access Token')
-
-    # Define the headers
-    headers = {
-        'Content-Type': 'application/json',
-        'Authorization': f'Bearer {access_token["access_token"]}'
-    }
-    print ('Getting Headers for Inventory')
 
     # Make the request
     orders = Orders(
@@ -35,19 +26,10 @@ def get_inventory(endpoint):
 
     # Check if the request was successful
 
-    if response is not None and response.status_code == 200:
+    if response.status_code == 200:
 
-        try:
-            temp_storage = io.StringIO()
-            temp_storage.write(response.text)
-            temp_storage.seek(0)
-            
-            print(temp_storage.read())
-            return json.load(temp_storage)
-        
-        except json.JSONDecodeError as e:
-            print(f'JSON Decode Error: {e}')
-            return {'error': 'Failed to parse JSON response'}
+        print ('Successful Response')
+        return response.json()
         
     else:
 
