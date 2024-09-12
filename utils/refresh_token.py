@@ -19,7 +19,7 @@ def generate_access_token():
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
     }
-    print ('Getting Headers')
+    print ('Getting Headers for Access Token')
 
     # Define the payload
     payload = {
@@ -28,7 +28,7 @@ def generate_access_token():
         'client_secret': client_secret,
         'refresh_token': refresh_token
     }
-    print ('Getting Payload')
+    print ('Getting Payload for Access Token')
 
     # Make the request
     response = requests.post('https://api.amazon.com/auth/o2/token', headers=headers, data=payload)
@@ -40,7 +40,7 @@ def generate_access_token():
 
         try:
             data = response.json()
-            print('Returning Response')
+            print('Returning Response for Access Token')
             return data
             
         except json.JSONDecodeError as e:
