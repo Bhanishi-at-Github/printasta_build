@@ -72,10 +72,14 @@ WSGI_APPLICATION = 'printasta.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db/db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'printasta',
+        'USER': 'postgres',
+        'PASSWORD': 'patiencebs',
+        'HOST': 'localhost',
+        'PORT': '5432',
 
+    }
 }
 
 
