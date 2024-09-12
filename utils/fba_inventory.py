@@ -4,6 +4,7 @@ Retrive the inventory of a FBA warehouse
 
 import json
 import os
+import io
 from django.shortcuts import redirect
 from utils.refresh_token import generate_access_token
 from sp_api.api import Orders
@@ -24,10 +25,6 @@ def get_inventory(endpoint):
     }
     print ('Getting Headers for Inventory')
 
-    # Define the payload
-    payload = None
-    print ('Getting Payload for Inventory')
-
     # Make the request
     orders = Orders(
         marketplace='US',
@@ -41,9 +38,11 @@ def get_inventory(endpoint):
     if response is not None and response.status_code == 200:
 
         try:
-            with open('/temp/temp.txt', 'w') as f:
-                f.write(response.text)
-
+                # Use in-memory storage instead of writing to a file
+                temp_storage = io.StringIO()
+                temp_storage.write(response.text)
+                temp_storage.seek(0)  # Reset cursor to the beginning if you need to read it later
+                print(temp_storage.read())
         except json.JSONDecodeError as e:
             print(f'JSON Decode Error: {e}')
             return {'error': 'Failed to parse JSON response'}
