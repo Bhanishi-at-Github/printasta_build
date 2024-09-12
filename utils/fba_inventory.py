@@ -5,6 +5,7 @@ Retrive the inventory of a FBA warehouse
 import requests
 import json
 from utils.refresh_token import generate_access_token
+from sp_api.api import Orders
 
 def get_inventory(endpoint):
 
@@ -18,46 +19,28 @@ def get_inventory(endpoint):
     # Define the headers
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer {}'.format(access_token)
+        'Authorization': f'Bearer {access_token["access_token"]}'
     }
     print ('Getting Headers')
 
     # Define the payload
-    payload = {
-        'granularity': 'US',
-        'granularityId': 'ATVPDKIKX0DER', 
-        'startDateTime': '2024-07-01T00:00:00Z',
-        'endDateTime': '2024-08-31T23:59:59Z'
-    }
+    payload = None
     print ('Getting Payload')
 
     # Make the request
-
-    if payload is not None:
-
-        response = requests.post(endpoint, headers=headers, data=json.dumps(payload))
-        print ('Getting Response', response)
+    response = requests.get(endpoint, headers=headers, data=payload)
 
     # Check if the request was successful
-        if response is not None and response.status_code == 200:
-
-            try:
-                data = response.json()
-                print('Returning Response')
-                return data
-                
-            except json.JSONDecodeError as e:
-                print(f'JSON Decode Error: {e}')
-                return {'error': 'Failed to parse JSON response'}
-            
-        else:
-            # Return an error message
-            print('No Response')
-            return {'error': 'No response from server'}    
-        
+    if response is None and response.status_code == 200:
+        try:
+            data = response.json()
+            print('Returning Response')
+            return data
+        except json.JSONDecodeError as e:
+            print(f'JSON Decode Error: {e}')
+            return {'error': 'Failed to parse JSON response'}
     else:
-        print('No Payload')
-        return {'error': 'No payload provided'}
-
+        print('Unsuccessful Response')
+        return {'error': f'Failed to retrieve inventory, status code: {response.status_code}'} 
 
 
