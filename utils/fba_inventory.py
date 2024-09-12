@@ -22,10 +22,10 @@ def get_inventory():
 
     # Define the payload
     payload = {
-        'granularity': 'Marketplace',
+        'granularity': 'US',
         'granularityId': 'ATVPDKIKX0DER',
-        'startDateTime': '2021-01-01T00:00:00Z',
-        'endDateTime': '2021-12-31T23:59:59Z'
+        'startDateTime': '2024-07-01T00:00:00Z',
+        'endDateTime': '2024-08-31T23:59:59Z'
     }
     print ('Getting Payload')
 
@@ -35,17 +35,24 @@ def get_inventory():
 
     # Check if the request was successful
     if response is not None:
+        print(f'Response Status Code: {response.status_code}')
+        print(f'Response Content: {response.text}')
 
-        # Return the inventory
-        print ('Returning Response')
-        data = response.json()
-        return data
-        
+        if response.status_code == 200:
+            try:
+                data = response.json()
+                print('Returning Response')
+                return data
+            except json.JSONDecodeError as e:
+                print(f'JSON Decode Error: {e}')
+                return {'error': 'Failed to parse JSON response'}
+        else:
+            print('Unsuccessful Response')
+            return {'error': f'Failed to retrieve inventory, status code: {response.status_code}'}
     else:
         # Return an error message
-        print ('Unsuccessful Response')
-        return {'error': 'Failed to retrieve inventory'}
-        
+        print('No Response')
+        return {'error': 'No response from server'}    
     
     
 
