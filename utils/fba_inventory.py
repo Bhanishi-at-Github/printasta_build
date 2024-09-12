@@ -4,15 +4,21 @@ Retrive the inventory of a FBA warehouse
 
 import requests
 import json
+from utils.refresh_token import generate_access_token
 
 def get_inventory(endpoint):
 
     '''Function to retrieve the inventory of a FBA without involving the database'''
 
+    # Generate Access token using refresh token
+
+    access_token = generate_access_token()
+    print ('Getting Access Token', access_token)
+    
     # Define the headers
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer'
+        'Authorization': 'Bearer {}'.format(access_token)
     }
     print ('Getting Headers')
 
