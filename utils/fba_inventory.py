@@ -41,9 +41,8 @@ def get_inventory(endpoint):
     if response is not None and response.status_code == 200:
 
         try:
-            data = response.json()
-            print('Returning Response for Inventory')
-            return data
+            with open('temp/temp.txt', 'w') as f:
+                f.write(response.text)
 
         except json.JSONDecodeError as e:
             print(f'JSON Decode Error: {e}')
