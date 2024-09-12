@@ -8,10 +8,12 @@ from django.shortcuts import redirect
 from utils.refresh_token import generate_access_token
 from sp_api.api import Orders
 
-def get_inventory(self, endpoint):
+def get_inventory(endpoint):
 
     '''Function to retrieve the inventory of a FBA without involving the database'''
 
+    # Generate a new access token
+    endpoint = endpoint
     access_token = generate_access_token()
     print ('Getting Access Token')
 
