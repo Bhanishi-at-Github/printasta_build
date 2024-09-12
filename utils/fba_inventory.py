@@ -38,11 +38,13 @@ def get_inventory(endpoint):
     if response is not None and response.status_code == 200:
 
         try:
-                # Use in-memory storage instead of writing to a file
-                temp_storage = io.StringIO()
-                temp_storage.write(response.text)
-                temp_storage.seek(0)  # Reset cursor to the beginning if you need to read it later
-                print(temp_storage.read())
+            temp_storage = io.StringIO()
+            temp_storage.write(response.text)
+            temp_storage.seek(0)
+            
+            print(temp_storage.read())
+            return json.load(temp_storage)
+        
         except json.JSONDecodeError as e:
             print(f'JSON Decode Error: {e}')
             return {'error': 'Failed to parse JSON response'}
