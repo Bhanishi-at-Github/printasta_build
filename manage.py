@@ -6,8 +6,6 @@ import sys
 # Set the DJANGO_SETTINGS_MODULE environment variable
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'printasta.settings')
 
-from django.core.wsgi import get_wsgi_application
-
 def main():
     """Run administrative tasks."""
     try:
@@ -22,6 +20,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# Vercel Setting
-app = get_wsgi_application()
