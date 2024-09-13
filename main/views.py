@@ -13,7 +13,7 @@ def home(request):
 
 def test(request):
 
-    endpoint = 'https://sellingpartnerapi-na.amazon.com/fba/inventory'
+    endpoint = '/orders/v0/orders'
 
     try:
         # Retrieve the inventory

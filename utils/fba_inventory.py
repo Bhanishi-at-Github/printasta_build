@@ -12,30 +12,25 @@ def get_inventory(endpoint):
 
     '''Function to retrieve the inventory of a FBA without involving the database'''
 
-    endpoint = endpoint
+    url = {
+        'base_URL': 'https://sandbox.sellingpartnerapi-na.amazon.com',
+        'endpoint': endpoint
+    }
 
     # Make the request
-    orders = Orders(
-        marketplace='US',
-        refresh_token=os.getenv('refresh_token'),
-    )
-    response = orders.get_orders()
-    print ('Getting Response for Inventory')
-
-    # Check if the request was successful
+    response = Orders().get_inventory(url)
 
     if response.status_code == 200:
 
         print ('Successful Response')
 
         try:
-            # Use in-memory storage instead of writing to a file
-            inventory = io.StringIO()
-            inventory.write(response.text)
-            inventory.seek(0)
-            print ('Inventory retrieved')
-            return HttpResponse(inventory, content_type='application/json')
-
+            # Retrieve the inventory according to vercel requirements
+            
+            inventory = response.json()
+            print('Retrieved Inventory')
+            return inventory
+        
         except json.JSONDecodeError as e:
             print(f'JSON Decode Error: {e}')
             return {'error': 'Failed to parse JSON response'}
@@ -46,4 +41,8 @@ def get_inventory(endpoint):
         print('Unsuccessful Response')
         return redirect('error.html', {'content': {'error': 'Failed to retrieve inventory'}})
 
+# Base URL for the API
+# https://sandbox.sellingpartnerapi-na.amazon.com
 
+# Endpoint for the API
+# /orders/v0/orders
