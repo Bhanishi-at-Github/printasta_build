@@ -3,7 +3,7 @@
   "name": "printasta",
   "builds": [
     {
-      "src": "printasta/wsgi.py",
+      "src": "wsgi.py",
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "30mb"
