@@ -11,44 +11,44 @@ def get_inventory(endpoint):
     '''Function to retrieve the inventory of a FBA without involving the database'''
 
         # Generate a new access token
-        access_token = generate_access_token()
-        print('Getting Access Token')
+    access_token = generate_access_token()
+    print('Getting Access Token')
 
         # Define the headers
-        headers = {
+    headers = {
             'Content-Type': 'application/json',
             'Authorization': f'Bearer {access_token["access_token"]}'
         }
-        print('Getting Headers for Inventory')
+    print('Getting Headers for Inventory')
 
         # Define the base URL
-        base_url = "https://sandbox.sellingpartnerapi-na.amazon.com"
+    base_url = "https://sandbox.sellingpartnerapi-na.amazon.com"
 
         # Define the URL
-        url = base_url + endpoint
+    url = base_url + endpoint
 
         # Make the request
 
-        orders_client = Orders(
+    orders_client = Orders(
             marketplace=Marketplaces.US,
             refresh_token=os.getenv('refresh_token'),
         )
 
         # Make the request
-        response = orders_client.get_orders()
-        print('Getting Response for Inventory')
+    response = orders_client.get_orders()
+    print('Getting Response for Inventory')
 
         # Debugging: Print the response object
-        print("Response object:", response)
+    print("Response object:", response)
 
         # Check if response is a list or iterable
-        if isinstance(response, ApiResponse):
-            print('Successful Response')
+    if isinstance(response, ApiResponse):
+        print('Successful Response')
             # Parse the response payload
-            response_payload = response.payload
+        response_payload = response.payload
             # Store inventory in db
-            for item in response_payload.get('Orders', []):
-                order = AppOrder(
+        for item in response_payload.get('Orders', []):
+            order = AppOrder(
                     order_id=item['AmazonOrderId'],
                     order_date=item['PurchaseDate'],
                     order_status=item['OrderStatus'],
@@ -57,7 +57,7 @@ def get_inventory(endpoint):
                     order_customer=item['BuyerName'],
                     order_address=item['ShippingAddress']['AddressLine1']
                 )
-                order.save()
-            return response_payload
+            order.save()
+        return response_payload
         
         
