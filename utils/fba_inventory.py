@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from utils.refresh_token import generate_access_token
 from sp_api.api import Orders
-from sp_api.base import Marketplaces
+from sp_api.base import Marketplaces, SellingApiException, ApiResponse
 from main.models import AppOrder  # Ensure you import your model
 
 def get_inventory(endpoint):
@@ -43,18 +43,20 @@ def get_inventory(endpoint):
         print("Response object:", response)
 
         # Check if response is a list or iterable
-        if isinstance(response, list):
+        if isinstance(response, ApiResponse):
             print('Successful Response')
+            # Parse the response payload
+            response_payload = response.payload
             # Store inventory in db
-            for item in response:
+            for item in response_payload.get('Orders', []):
                 order = AppOrder(
-                    order_id=item['order_id'],
-                    order_date=item['order_date'],
-                    order_status=item['order_status'],
-                    order_total=item['order_total'],
-                    order_items=item['order_items'],
-                    order_customer=item['order_customer'],
-                    order_address=item['order_address']
+                    order_id=item['AmazonOrderId'],
+                    order_date=item['PurchaseDate'],
+                    order_status=item['OrderStatus'],
+                    order_total=item['OrderTotal']['Amount'],
+                    order_items=item['NumberOfItemsShipped'],
+                    order_customer=item['BuyerName'],
+                    order_address=item['ShippingAddress']['AddressLine1']
                 )
                 order.save()
         else:
@@ -62,8 +64,9 @@ def get_inventory(endpoint):
             print("Unexpected response format:", response)
             return HttpResponse(json.dumps({'error': 'Unexpected response format'}), content_type='application/json')
         
-        return HttpResponse(json.dumps(response), content_type='application/json')
+        return HttpResponse(json.dumps(response.payload), content_type='application/json')
 
     except Exception as e:
         print(f'An error occurred: {e}')
         return HttpResponse(json.dumps({'error': 'An unexpected error occurred'}), content_type='application/json')
+    
