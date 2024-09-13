@@ -12,25 +12,26 @@ def get_inventory(endpoint):
         'endpoint': endpoint
     }
 
-    # Make the request
-    response = Orders()
-
-    # Get the inventory
-    response = response.get_orders()
-
-    # Store inventory in db
-    for item in response:
-        order = AppOrders(
-            order_id = item['order_id'],
-            order_date = item['order_date'],
-            order_status = item['order_status'],
-            order_total = item['order_total'],
-            order_items = item['order_items'],
-            order_customer = item['order_customer'],
-            order_address = item['order_address']
-        )
-        order.save()
-
+    response = Orders.get_orders()
+    
+    # Check if response is a list or iterable
+    if isinstance(response, list):
+        # Store inventory in db
+        for item in response:
+            order = AppOrders(
+                order_id=item['order_id'],
+                order_date=item['order_date'],
+                order_status=item['order_status'],
+                order_total=item['order_total'],
+                order_items=item['order_items'],
+                order_customer=item['order_customer'],
+                order_address=item['order_address']
+            )
+            order.save()
+    else:
+        # Handle the case where response is not as expected
+        print("Unexpected response format:", response)
+    
     return response
 
 # Base URL for the API
