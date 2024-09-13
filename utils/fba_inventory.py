@@ -21,11 +21,11 @@ def get_inventory(endpoint):
         }
         print('Getting Headers for Inventory')
 
+        # Define the base URL
+        base_url = "https://sandbox.sellingpartnerapi-na.amazon.com"
+
         # Define the URL
-        url = {
-            'base_URL': 'https://sandbox.sellingpartnerapi-na.amazon.com',
-            'endpoint': endpoint
-        }
+        url = base_url + endpoint
 
         # Make the request
         response = Orders.get_orders(url)
