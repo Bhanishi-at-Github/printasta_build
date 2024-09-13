@@ -59,12 +59,12 @@ def get_inventory(endpoint):
                     order_address=item['ShippingAddress']['AddressLine1']
                 )
                 order.save()
+            return response_payload
+        
         else:
             # Handle the case where response is not as expected
             print("Unexpected response format:", response)
             return HttpResponse(json.dumps({'error': 'Unexpected response format'}), content_type='application/json')
-        
-        return HttpResponse(json.dumps(response.payload), content_type='application/json')
 
     except Exception as e:
         print(f'An error occurred: {e}')
