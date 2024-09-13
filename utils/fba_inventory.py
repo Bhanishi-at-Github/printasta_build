@@ -12,7 +12,7 @@ def get_inventory(endpoint):
         'endpoint': endpoint
     }
 
-    response = Orders.get_orders()
+    response = Orders.get_orders(url)
     
     # Check if response is a list or iterable
     if isinstance(response, list):
