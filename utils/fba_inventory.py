@@ -13,7 +13,10 @@ def get_inventory(endpoint):
     }
 
     # Make the request
-    response = Orders.get_orders()
+    response = Orders()
+
+    # Get the inventory
+    response = response.get_orders()
 
     # Store inventory in db
     for item in response:
