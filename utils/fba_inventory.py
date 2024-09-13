@@ -10,7 +10,6 @@ from main.models import AppOrder  # Ensure you import your model
 def get_inventory(endpoint):
     '''Function to retrieve the inventory of a FBA without involving the database'''
 
-    try:
         # Generate a new access token
         access_token = generate_access_token()
         print('Getting Access Token')
@@ -61,12 +60,4 @@ def get_inventory(endpoint):
                 order.save()
             return response_payload
         
-        else:
-            # Handle the case where response is not as expected
-            print("Unexpected response format:", response)
-            return HttpResponse(json.dumps({'error': 'Unexpected response format'}), content_type='application/json')
-
-    except Exception as e:
-        print(f'An error occurred: {e}')
-        return HttpResponse(json.dumps({'error': 'An unexpected error occurred'}), content_type='application/json')
-    
+        
