@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from utils.refresh_token import generate_access_token
 from sp_api.api import Orders
+from sp_api.base import Marketplaces
 from main.models import AppOrder  # Ensure you import your model
 
 def get_inventory(endpoint):
@@ -28,7 +29,14 @@ def get_inventory(endpoint):
         url = base_url + endpoint
 
         # Make the request
-        response = Orders.get_orders(url)
+
+        orders_client = Orders(
+            marketplace=Marketplaces.US,
+            refresh_token=os.getenv('refresh_token'),
+        )
+
+        # Make the request
+        response = orders_client.get_orders()
         print('Getting Response for Inventory')
 
         # Debugging: Print the response object
