@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class AppOrders(models.Model):
+class AppOrder(models.Model):
     order_id = models.CharField(max_length=50)
     order_date = models.DateField()
     order_status = models.CharField(max_length=50)

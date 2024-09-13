@@ -4,8 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from utils.refresh_token import generate_access_token
 from sp_api.api import Orders
-from main.models import AppOrders 
-
+from main.models import AppOrder  # Ensure you import your model
 
 def get_inventory(endpoint):
     '''Function to retrieve the inventory of a FBA without involving the database'''
@@ -32,12 +31,15 @@ def get_inventory(endpoint):
         response = Orders.get_orders(url)
         print('Getting Response for Inventory')
 
+        # Debugging: Print the response object
+        print("Response object:", response)
+
         # Check if response is a list or iterable
         if isinstance(response, list):
             print('Successful Response')
             # Store inventory in db
             for item in response:
-                order = AppOrders(
+                order = AppOrder(
                     order_id=item['order_id'],
                     order_date=item['order_date'],
                     order_status=item['order_status'],
