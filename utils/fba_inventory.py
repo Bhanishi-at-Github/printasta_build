@@ -27,14 +27,22 @@ def get_inventory(endpoint):
         try:
             # Retrieve the inventory according to vercel requirements
             
-            inventory = response.json()
-            print('Retrieved Inventory')
-            return inventory
+            file = 'tmp/temp.txt'
+
+            with open(file, 'w') as f:
+                f.write("Hello World")
+            f.close()
+
+            with open(file, 'r') as f:
+                content = f.read()
+            f.close()
+
+            return content
         
-        except json.JSONDecodeError as e:
-            print(f'JSON Decode Error: {e}')
-            return {'error': 'Failed to parse JSON response'}
-        
+        except Exception as e:
+
+            print('Error:', str(e))
+            return redirect('error.html', {'content': {'error': 'Failed to retrieve inventory'}})
         
     else:
 
