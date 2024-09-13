@@ -15,16 +15,12 @@ def test(request):
 
     endpoint = '/orders/v0/orders'
 
-    try:
-        # Retrieve the inventory
-        inventory = get_inventory(endpoint)
-        return render(request, 'test.html', {'content': inventory})
-    
-    except Exception as e:
+            # Retrieve the inventory
+    inventory = get_inventory(endpoint)
+    print('Getting Inventory')
 
-        # Log the error
-        logging.error(str(e))
+    return render(request, 'test.html', {'inventory': inventory})
 
-        # Return an error message
-        return render(request, 'error.html', {'content': {'error': 'Failed to retrieve inventory'}})
+ 
 
+        
