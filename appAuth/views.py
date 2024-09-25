@@ -12,43 +12,43 @@ lwa_client_id = os.getenv('lwa_client_id')
 lwa_client_secret = os.getenv('lwa_client_secret')
 redirect_uri = os.getenv('redirect_uri')
 
-def register_user(request):
+# def register_user(request):
 
-    '''This function registers the user for the Amazon authorization.'''
+#     '''This function registers the user for the Amazon authorization.'''
 
-    if request.method=='POST':
+#     if request.method=='POST':
 
-        try:
+#         try:
             
-            seller_name = request.POST.get('seller_name')
-            email = request.POST.get('email')
-            password = request.POST.get('password')
+#             seller_name = request.POST.get('seller_name')
+#             email = request.POST.get('email')
+#             password = request.POST.get('password')
 
-            # Register the user
-            if not seller_name or not email or not password:
-                return HttpResponse("Error: Missing required fields", status=400)
+#             # Register the user
+#             if not seller_name or not email or not password:
+#                 return HttpResponse("Error: Missing required fields", status=400)
 
-            if User.objects.filter(email=email).exists():
-                return HttpResponse("Error: User already exists", status=400)
+#             if User.objects.filter(email=email).exists():
+#                 return HttpResponse("Error: User already exists", status=400)
 
-            user = User.objects.create(
-                seller_name=seller_name,
-                email=email,
-            )
+#             user = User.objects.create(
+#                 seller_name=seller_name,
+#                 email=email,
+#             )
 
-            user.set_password(password)
-            user.save()
+#             user.set_password(password)
+#             user.save()
 
-            return redirect(request, 'authorize.html')
+#             return redirect(request, 'authorize.html')
 
-        except Exception as e:
+#         except Exception as e:
 
-            return HttpResponse(
-                f"Error during registration: {e}",
-                status=500
-            )
+#             return HttpResponse(
+#                 f"Error during registration: {e}",
+#                 status=500
+#             )
         
-    return render(request, 'register_user.html')
+#     return render(request, 'register_user.html')
 
 
 

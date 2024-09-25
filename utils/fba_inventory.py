@@ -8,45 +8,51 @@ from sp_api.base import Marketplaces, SellingApiException, ApiResponse
 from main.models import AppOrder  # Ensure you import your model
 
 def get_inventory(endpoint):
+
     '''Function to retrieve the inventory of a FBA without involving the database'''
 
-        # Generate a new access token
+    # Generate a new access token
     access_token = generate_access_token()
     print('Getting Access Token')
 
-        # Define the headers
+    # Define the headers
     headers = {
+
             'Content-Type': 'application/json',
             'Authorization': f'Bearer {access_token["access_token"]}'
         }
+    
     print('Getting Headers for Inventory')
 
-        # Define the base URL
+    # Define the base URL
     base_url = "https://sandbox.sellingpartnerapi-na.amazon.com"
 
-        # Define the URL
+    # Define the URL
     url = base_url + endpoint
 
-        # Make the request
+    # Make the request
 
     orders_client = Orders(
             marketplace=Marketplaces.US,
             refresh_token=os.getenv('refresh_token'),
         )
 
-        # Make the request
+    # Make the request
     response = orders_client.get_orders()
     print('Getting Response for Inventory')
 
-        # Debugging: Print the response object
+    # Debugging: Print the response object
     print("Response object:", response)
 
-        # Check if response is a list or iterable
+    # Check if response is a list or iterable
     if isinstance(response, ApiResponse):
+
         print('Successful Response')
-            # Parse the response payload
+
+        # Parse the response payload
         response_payload = response.payload
-            # Store inventory in db
+
+        # Store inventory in db
         for item in response_payload.get('Orders', []):
             order = AppOrder(
                     order_id=item['AmazonOrderId'],
