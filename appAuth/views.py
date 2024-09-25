@@ -52,21 +52,20 @@ redirect_uri = os.getenv('redirect_uri')
 
 
 
-def state_define():
+# def state_define():
 
-    '''This function defines the state for the authorization request.'''
-    import random
-    import string
+#     '''This function defines the state for the authorization request.'''
+#     import random
+#     import string
 
-    state = ''.join(random.choices(string.ascii_uppercase + string.digits, k=16))
+#     state = ''.join(random.choices(string.ascii_uppercase + string.digits, k=16))
 
-    return state
+#     return state
 
 
 def authorize(request):
     '''This function redirects the user to the Amazon authorization page.'''
-    state = state_define()
-    auth_url = f"https://sellercentral.amazon.com/apps/authorize/consent?application_id={lwa_app_id}&state={state}&version=beta"
+    auth_url = f"https://sellercentral.amazon.com/apps/authorize/consent?application_id={lwa_app_id}&version=beta"
 
     return redirect(request, auth_url)
 
