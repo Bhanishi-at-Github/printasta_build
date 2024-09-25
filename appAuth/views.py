@@ -67,7 +67,7 @@ def authorize(request):
     '''This function redirects the user to the Amazon authorization page.'''
     auth_url = f"https://sellercentral.amazon.com/apps/authorize/consent?application_id={lwa_app_id}&version=beta"
 
-    return redirect(request, auth_url)
+    return redirect(auth_url)
 
 def redirect_view(request):
     '''This function handles the redirection from the Amazon authorization page.'''
